@@ -1,4 +1,3 @@
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/YOUR_CODACY_PROJECT_ID)](https://www.codacy.com/gh/YOUR_GITHUB_ORG/YOUR_REPO_NAME/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=YOUR_GITHUB_ORG/YOUR_REPO_NAME&amp;utm_campaign=Badge_Grade) [![Build Status](https://travis-ci.com/YOUR_GITHUB_ORG/YOUR_REPO_NAME.svg?branch=main)](https://travis-ci.com/YOUR_GITHUB_ORG/YOUR_REPO_NAME)
 # Plataforma de Gestão de Moradias Estudantis
 ## :octocat: Integrantes
 [Antonio M. Cordeiro](https://github.com/Antonio-Marcos-C) | [Carlos Raiff](https://github.com/Raiff-Farias) | [Felipe Costa](https://github.com/FelipeCostaUFAPE) | [Joneilson C. Botelho](https://github.com/Joneilson) | [Alerreandro Abreu](https://github.com/Alerreandro) | [Matheus Cavalcante](https://github.com/Matheuuscavufape) | [Romildo Galindo](https://github.com/juniorgalindo1990)
@@ -25,9 +24,6 @@ O sistema permitirá que os usuários:
 ### [Java com Spring Boot](https://spring.io/projects/spring-boot)
 * Versão do Java: 22.0.2
 * Versão do Spring Boot: 3.4.7
-### [Codacy](https://www.codacy.com/product)
-### [Travis CI](https://travis-ci.org/)
-### [Heroku](https://www.heroku.com/)
 
 ## :construction: Status do Projeto
 Em Andamento
