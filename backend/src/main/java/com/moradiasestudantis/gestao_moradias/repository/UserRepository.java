@@ -6,6 +6,6 @@ import com.moradiasestudantis.gestao_moradias.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 	
-	Optional<User> finByEmail(String email);
+	Optional<User> findByEmail(String email);
 
 }
