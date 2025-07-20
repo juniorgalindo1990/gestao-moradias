@@ -10,29 +10,44 @@ export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth';
 
   constructor(private http: HttpClient) { }
-  
+
   register(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, userData);
   }
-  
+
   login(credentials: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials);
   }
-  
+
   saveToken(token: string): void {
     localStorage.setItem('authToken', token);
   }
-  
+
   getToken(): string | null {
     return localStorage.getItem('authToken');
   }
-  
+
   logout(): void {
     localStorage.removeItem('authToken');
   }
-  
+
   isLoggedIn(): boolean {
     const token = this.getToken();
     return token !== null;
   }
+
+  getUserInfo(): any | null {
+  const token = this.getToken();
+  if (!token) {
+    return null;
+  }
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload
+  }
+  catch (error) {
+    console.error('Error ao decodificar token', error);
+    return null;
+  }
+}
 }
