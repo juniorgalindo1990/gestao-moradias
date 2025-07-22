@@ -1,12 +1,14 @@
 package com.moradiasestudantis.gestao_moradias.security;
 
-import java.sql.Date;
+import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.Value;
+import io.jsonwebtoken.security.Keys;
+
 
 @Service
 public class TokenService {
@@ -20,17 +22,17 @@ public class TokenService {
             .setSubject(userDetails.getUsername())
             .claim("role", userDetails.getUser().getRole().name())
             .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-            .signWith(SignatureAlgorithm.HS256, secret)
+            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hora
+            .signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256)
             .compact();
     }
 
     public String getSubject(String token) {
-        return Jwts.parser()
-            .setSigningKey(secret)
+        return Jwts.parserBuilder()
+            .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
+            .build()
             .parseClaimsJws(token)
             .getBody()
             .getSubject();
     }
 }
-
