@@ -32,7 +32,7 @@ public class AuthController {
         User user = new User();
         user.setEmail(request.getEmail());
         user.setSenha(passwordEncoder.encode(request.getSenha()));
-        user.setRole(RoleEnum.User);
+        user.setRole(RoleEnum.USER);
 
 
         userRepository.save(user);
@@ -79,7 +79,8 @@ public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
         return ResponseEntity.ok(new TokenResponse(token));
     } catch (Exception e) {
-        return ResponseEntity.status(401).body("Credenciais inválidas");
+        System.out.println("Ocorreu um erro após a autenticação!");
+        return ResponseEntity.status(500).body("Erro interno após a autenticação: " + e.getMessage());
     }
 }
 
