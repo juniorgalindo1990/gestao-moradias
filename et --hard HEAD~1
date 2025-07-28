@@ -1,0 +1,145 @@
+[33mcommit de6c0707170600d36db7aff7d035064e1b5127bf[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Raiff Farias <raiff.farias@gmail.com>
+Date:   Tue Jul 22 22:49:22 2025 -0300
+
+    Revert "Integração Backend e Frontend"
+    
+    This reverts commit 82895ef318cdf814069693091238624f54627fee.
+
+[33mcommit c8ee73be6f222b40da075e063d41c8d5147e92b3[m[33m ([m[1;31mfork/main[m[33m)[m
+Merge: 82895ef cdf7ffc
+Author: Raiff Farias <raiff.farias@gmail.com>
+Date:   Tue Jul 22 22:31:40 2025 -0300
+
+    Resolvendo conflito de merge em SecurityConfig
+
+[33mcommit 82895ef318cdf814069693091238624f54627fee[m
+Author: Raiff Farias <raiff.farias@gmail.com>
+Date:   Tue Jul 22 21:38:34 2025 -0300
+
+    Integração Backend e Frontend
+
+[33mcommit cdf7ffc40f43fb6bb0f124c3bdb51dcdd0804c61[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 101454d 74049f6
+Author: Júnior Galindo <156921807+juniorgalindo1990@users.noreply.github.com>
+Date:   Tue Jul 22 21:11:27 2025 -0300
+
+    Merge pull request #11 from Antonio-Marcos-C/main
+    
+    Melhorias na camada de segurança com JWT
+
+[33mcommit 74049f6e2fd3043d7168a13561c32be55f14746d[m
+Author: Antonio Marcos Cordeiro da Silva <antoniomarcos1020@hotmail.com>
+Date:   Tue Jul 22 20:12:54 2025 -0300
+
+    Melhorias na camada de segurança com JWT
+
+[33mcommit 101454d32e90b6ccf4f3321996968e25c2a4be94[m
+Merge: 5108663 fad86c9
+Author: Júnior Galindo <156921807+juniorgalindo1990@users.noreply.github.com>
+Date:   Tue Jul 22 11:53:07 2025 -0300
+
+    Merge pull request #9 from Matheuuscavufape/feat/auth-jwt
+    
+    feat(auth): implementa endpoint de registro de usuário
+
+[33mcommit fad86c90a5c7ec23390bd5137026bc51c000aa17[m
+Author: Matheus Cavalcante <matheus.mcavalcante@ufape.edu.br>
+Date:   Tue Jul 22 11:41:47 2025 -0300
+
+    feat(auth): implementa endpoint de registro de usuário
+    
+    - Cria rota POST /auth/register para cadastro de novos usuários
+    - Salva e persiste dados com senha criptografada
+    - Define role padrão ao registrar usuário
+    - Permite acesso público à rota de registro via SecurityConfig
+    - Atualiza pom.xml com dependência do JWT
+
+[33mcommit 5108663d875c12218f05ffe9d040f32ee2ff17df[m
+Merge: 99541aa c5a8c30
+Author: Júnior Galindo <156921807+juniorgalindo1990@users.noreply.github.com>
+Date:   Sun Jul 20 23:02:43 2025 -0300
+
+    Merge pull request #8 from FelipeCostaUFAPE/main
+    
+    Commit dos arquivos CSS e HTML
+
+[33mcommit 99541aa9f42b09a4587f6b63321e0c022254a69b[m
+Merge: 629b688 18a6e42
+Author: Júnior Galindo <156921807+juniorgalindo1990@users.noreply.github.com>
+Date:   Sun Jul 20 23:02:21 2025 -0300
+
+    Merge pull request #7 from Alerreandro/main
+    
+    Implementa fluxo de autenticação e autorização com JWT
+
+[33mcommit c5a8c30940c128ac6344d5c6f3505918b1ea8398[m
+Author: Felipe Costa <felipe.sccosta@ufape.edu.br>
+Date:   Sun Jul 20 21:15:47 2025 -0300
+
+    Commit relacionado Customizar os arquivos CSS e Estilizar os templates HTML das telas de Login e Registro
+
+[33mcommit 18a6e4272e894f48b06efc1304f79a0ebc05b754[m
+Author: Alerreandro <alerreandrocosta@gmail.com>
+Date:   Sun Jul 20 20:51:48 2025 -0300
+
+    Implementa autenticação com Security e JWT
+
+[33mcommit d15dc5208c37df409af4f79b9c7c67e6cf57a135[m
+Author: Alerreandro <alerreandrocosta@gmail.com>
+Date:   Sun Jul 20 18:42:34 2025 -0300
+
+    Implementa entidade User e Role como um Enum
+
+[33mcommit 629b688559937e5d737340c52ea3d4fe666325d4[m
+Merge: 537d792 2ddff10
+Author: Júnior Galindo <156921807+juniorgalindo1990@users.noreply.github.com>
+Date:   Sun Jul 20 15:57:48 2025 -0300
+
+    Merge pull request #6 from Joneilson/main
+    
+    feat(auth): implementa guard funcional para controle de acesso
+
+[33mcommit 2ddff10707dd8f927e474bb119c6f7c02b0f727c[m
+Author: Joneilson Junior <joneilsonjunior@gmail.com>
+Date:   Sun Jul 20 00:08:40 2025 -0300
+
+    feat(auth): implementa guard funcional para controle de acesso
+    
+    Adiciona o `authGuard` para proteger rotas com base no status de autenticação e na permissão (role) do usuário.
+
+[33mcommit 537d792beb33565f8c3e333700b3f1767013c5f6[m
+Merge: 00e1bca 46c9924
+Author: Júnior Galindo <156921807+juniorgalindo1990@users.noreply.github.com>
+Date:   Sat Jul 19 22:58:46 2025 -0300
+
+    Merge pull request #5 from juniorgalindo1990/main
+    
+    feat(auth): implementa telas e servicos de login, registro e logout.
+
+[33mcommit 46c99241fb0da85d73c23b0034c6861cea1a1107[m
+Author: juniorgalindo1990 <156921807+juniorgalindo1990@users.noreply.github.com>
+Date:   Sat Jul 19 22:24:05 2025 -0300
+
+    feat(auth): implementa telas e servicos de login, registro e logout
+
+[33mcommit 00e1bca8822e92588b9736485b1672c1507f1f91[m
+Merge: 59cd0c7 4ebcc6b
+Author: Júnior Galindo <156921807+juniorgalindo1990@users.noreply.github.com>
+Date:   Fri Jul 18 15:28:27 2025 -0300
+
+    Merge pull request #4 from juniorgalindo1990/main
+    
+    docs: Corrige README removendo badges e informações desnecessárias
+
+[33mcommit 4ebcc6bedac789d32efa836acff531cd1b5b8705[m
+Author: juniorgalindo1990 <156921807+juniorgalindo1990@users.noreply.github.com>
+Date:   Fri Jul 18 15:21:16 2025 -0300
+
+    docs: Corrige README removendo badges e informações desnecessárias
+
+[33mcommit 59cd0c7e969432251cc7843ead3c6b8679519a86[m
+Author: juniorgalindo1990 <156921807+juniorgalindo1990@users.noreply.github.com>
+Date:   Fri Jul 11 10:35:23 2025 -0300
+
+    Primeira iteracao: Setup inicial do projeto com frontend Angular, backend Spring Boot e README
