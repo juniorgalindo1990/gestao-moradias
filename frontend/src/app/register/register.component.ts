@@ -1,44 +1,35 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, RouterModule], 
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  
   registerData = {
     nome: '',
     email: '',
-    senha: '',
-    confirmarSenha: ''
+    senha: ''
+    
   };
 
   constructor(private authService: AuthService, private router: Router) { }
 
   onSubmit() {
-    
-    if (this.registerData.senha !== this.registerData.confirmarSenha) {
-      alert('As senhas não coincidem!');
-      return; 
-    }
-
-    
     this.authService.register(this.registerData).subscribe({
-      next: (response) => {
-        console.log('Registro bem-sucedido!', response);
-        alert('Usuário registrado com sucesso! Faça o login.');
-        
+      next: () => {
+        alert('Usuário registrado com sucesso! Por favor, faça o login.');
         this.router.navigate(['/login']);
       },
       error: (err) => {
         console.error('Erro no registro!', err);
-        alert('Falha no registro. Tente novamente.');
+        alert('Falha no registro. Verifique os dados e tente novamente.');
       }
     });
   }
