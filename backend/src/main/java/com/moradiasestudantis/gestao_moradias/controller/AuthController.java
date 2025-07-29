@@ -1,6 +1,7 @@
 package com.moradiasestudantis.gestao_moradias.controller;
 
-import com.moradiasestudantis.gestao_moradias.entity.User;
+import com.moradiasestudantis.gestao_moradias.dto.TokenDto;
+import com.moradiasestudantis.gestao_moradias.model.User;
 import com.moradiasestudantis.gestao_moradias.num.RoleEnum;
 import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
 import com.moradiasestudantis.gestao_moradias.security.TokenService;
@@ -77,7 +78,7 @@ public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         var userDetails = (UserDetailsImpl) authentication.getPrincipal();
         var token = tokenService.gerarToken(userDetails);
 
-        return ResponseEntity.ok(new TokenResponse(token));
+        return ResponseEntity.ok(new TokenDto(token));
     } catch (Exception e) {
         System.out.println("Ocorreu um erro após a autenticação!");
         return ResponseEntity.status(500).body("Erro interno após a autenticação: " + e.getMessage());
