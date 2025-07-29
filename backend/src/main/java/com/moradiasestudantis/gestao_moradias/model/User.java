@@ -2,25 +2,24 @@ package com.moradiasestudantis.gestao_moradias.model;
 
 import com.moradiasestudantis.gestao_moradias.num.RoleEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O email é obrigatório.")
-    @Email(message = "O formato do email é inválido.")
     @Column(unique = true, nullable = false)
     private String email;
 
-    @NotBlank(message = "A senha é obrigatória.")
-    @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres.")
     @Column(nullable = false)
     private String senha;
 
@@ -28,46 +27,35 @@ public class User {
     @Column(nullable = false)
     private RoleEnum role;
 
-    // --- Getters e Setters ---
-    
     public User() {}
 
-    public User(Long id, String email, String senha, RoleEnum role) {
-        this.id = id;
-        this.email = email;
-        this.senha = senha;
-        this.role = role;
+    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == RoleEnum.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
     }
 
-    public Long getId() {
-        return id;
+    @Override
+    public String getPassword() {
+        return this.senha;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public RoleEnum getRole() {
-        return role;
-    }
-
-    public void setRole(RoleEnum role) {
-        this.role = role;
-    }
+    
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
+    public RoleEnum getRole() { return role; }
+    public void setRole(RoleEnum role) { this.role = role; }
 }

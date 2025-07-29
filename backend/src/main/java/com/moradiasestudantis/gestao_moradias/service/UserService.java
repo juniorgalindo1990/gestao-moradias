@@ -1,38 +1,41 @@
 package com.moradiasestudantis.gestao_moradias.service;
 
-import com.moradiasestudantis.gestao_moradias.num.RoleEnum;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service; 
-
 import com.moradiasestudantis.gestao_moradias.dto.RegisterDto;
 import com.moradiasestudantis.gestao_moradias.model.User;
 import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
-	private final UserRepository userRepository;
-	private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
-	}
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilizador não encontrado com o email: " + username));
+    }
 
-	public void register(RegisterDto dto) {
-		if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
-			throw new IllegalStateException("E-mail já cadastrado.");
-		}
+    public void registerUser(RegisterDto registerDto) {
+        if (userRepository.findByEmail(registerDto.getEmail()).isPresent()) {
+            throw new RuntimeException("Este email já está em uso.");
+        }
 
-		User user = new User();
-		user.setEmail(dto.getEmail());
-	
-		user.setSenha(passwordEncoder.encode(dto.getSenha()));
+        User newUser = new User();
+        newUser.setEmail(registerDto.getEmail());
+        newUser.setSenha(passwordEncoder.encode(registerDto.getSenha()));
+        newUser.setRole(registerDto.getRole());
 
-		user.setRole(RoleEnum.valueOf(dto.getRole().toUpperCase()));
-
-		userRepository.save(user);
-	}
+        userRepository.save(newUser);
+    }
 }

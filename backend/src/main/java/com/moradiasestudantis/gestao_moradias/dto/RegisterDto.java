@@ -1,45 +1,43 @@
 package com.moradiasestudantis.gestao_moradias.dto;
 
+import com.moradiasestudantis.gestao_moradias.num.RoleEnum;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class RegisterDto {
 
-	private String email;
-	private String senha;
-	private String role;
-	
-	public RegisterDto() {}
-	
-	public RegisterDto(String email, String senha, String role) {
-		this.email = email;
-		this.senha = senha;
-		this.role = role;
-	}
+    @NotBlank @Email
+    private String email;
 
-	public String getEmail() {
-		return email;
-	}
+    @NotBlank
+    private String senha;
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    @NotNull
+    private RoleEnum role;
 
-	public String getSenha() {
-		return senha;
-	}
+    // Getters e Setters
+    public String getEmail() {
+        return email;
+    }
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public String getSenha() {
+        return senha;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
-	
-	
-	
-	
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public RoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEnum role) {
+        this.role = role;
+    }
 }

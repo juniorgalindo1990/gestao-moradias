@@ -1,14 +1,16 @@
 package com.moradiasestudantis.gestao_moradias.security;
 
-import java.util.Date;
-
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.moradiasestudantis.gestao_moradias.model.User;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Service
 public class TokenService {
@@ -16,29 +18,35 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public String gerarToken(@NonNull UserDetailsImpl userDetails) {
-        String emissor = "gestao-moradias";
-        String usuario = userDetails.getUsername();
-        String role = userDetails.getUser().getRole().name();
-        Date agora = new Date();
-        Date expiracao = new Date(System.currentTimeMillis() + 1000 * 60 * 60); // 1 hora
-
-        return Jwts.builder()
-            .setIssuer(emissor)
-            .setSubject(usuario)
-            .claim("role", role)
-            .setIssuedAt(agora)
-            .setExpiration(expiracao)
-            .signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256)
-            .compact();
+    public String generateToken(User user) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.create()
+                    .withIssuer("gestao-moradias-api")
+                    .withSubject(user.getEmail())
+                    .withClaim("role", user.getRole().toString())
+                    .withExpiresAt(genExpirationDate())
+                    .sign(algorithm);
+        } catch (JWTCreationException exception) {
+            throw new RuntimeException("Erro ao gerar o token JWT", exception);
+        }
     }
 
-    public String getSubject(@NonNull String token) {
-        return Jwts.parserBuilder()
-            .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
-            .build()
-            .parseClaimsJws(token)
-            .getBody()
-            .getSubject();
+    public String validateToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer("gestao-moradias-api")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+        } catch (JWTVerificationException exception) {
+            return ""; // Retorna vazio se o token for inválido
+        }
+    }
+
+    private Instant genExpirationDate() {
+        // Token expira em 2 horas
+        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 }
