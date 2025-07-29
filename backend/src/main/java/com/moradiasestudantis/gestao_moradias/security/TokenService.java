@@ -35,4 +35,8 @@ public class TokenService {
             .getBody()
             .getSubject();
     }
+
+    public String getSecret() {
+    return secret;
+}
 }

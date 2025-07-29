@@ -11,6 +11,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.moradiasestudantis.gestao_moradias.entity.User;
 import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,10 +38,11 @@ public class SecurityFilter extends OncePerRequestFilter {
             if (user != null) {
                 UserDetailsImpl userDetails = new UserDetailsImpl(user);
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
+                userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
+
 
         filterChain.doFilter(request, response);
     }

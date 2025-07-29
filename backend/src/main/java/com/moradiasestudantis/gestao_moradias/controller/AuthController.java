@@ -1,5 +1,6 @@
 package com.moradiasestudantis.gestao_moradias.controller;
 
+import com.moradiasestudantis.gestao_moradias.dto.RegisterDto;
 import com.moradiasestudantis.gestao_moradias.entity.User;
 import com.moradiasestudantis.gestao_moradias.num.RoleEnum;
 import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
@@ -24,20 +25,25 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("Email já está em uso.");
-        }
-
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setSenha(passwordEncoder.encode(request.getSenha()));
-        user.setRole(RoleEnum.User);
-
-
-        userRepository.save(user);
-        return ResponseEntity.ok("Usuário registrado com sucesso!");
+    public ResponseEntity<String> register(@RequestBody RegisterDto dto) {
+    if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
+        return ResponseEntity.badRequest().body("Email já está em uso.");
     }
+
+    User user = new User();
+    user.setEmail(dto.getEmail());
+    user.setSenha(passwordEncoder.encode(dto.getSenha()));
+
+    try {
+        user.setRole(RoleEnum.valueOf(dto.getRole()));
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body("Role inválida.");
+    }
+
+    userRepository.save(user);
+    return ResponseEntity.ok("Usuário registrado com sucesso!");
+}
+
 
     public static class RegisterRequest {
         private String email;

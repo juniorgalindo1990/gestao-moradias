@@ -2,6 +2,8 @@ package com.moradiasestudantis.gestao_moradias.num;
 
 public enum RoleEnum {
 
-	User,
-	ADMIN
+	USER,
+	ADMIN,
+	ESTUDANTE,
+    PROPRIETARIO
 }
