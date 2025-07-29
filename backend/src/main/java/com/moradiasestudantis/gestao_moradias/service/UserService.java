@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service; 
 
 import com.moradiasestudantis.gestao_moradias.dto.RegisterDto;
-import com.moradiasestudantis.gestao_moradias.entity.User;
+import com.moradiasestudantis.gestao_moradias.model.User;
 import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
 
 @Service

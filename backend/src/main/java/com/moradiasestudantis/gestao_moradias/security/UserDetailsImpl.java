@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.moradiasestudantis.gestao_moradias.entity.User;
+import com.moradiasestudantis.gestao_moradias.model.User;
 
 public class UserDetailsImpl implements UserDetails {
 

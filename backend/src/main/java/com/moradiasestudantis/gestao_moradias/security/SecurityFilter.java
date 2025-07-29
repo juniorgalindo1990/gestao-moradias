@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.moradiasestudantis.gestao_moradias.entity.User;
+import com.moradiasestudantis.gestao_moradias.model.User;
 import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
 
 import jakarta.servlet.FilterChain;
