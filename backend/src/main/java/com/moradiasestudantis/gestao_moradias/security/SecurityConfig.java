@@ -27,12 +27,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers("/profile/student/**").hasRole("USER")
-                        .requestMatchers("/residences/**").hasRole("ADMIN")
-                        .requestMatchers("/students/search").hasRole("ADMIN")                  
+                        .requestMatchers(HttpMethod.GET, "/residences/{id}").permitAll() // Permite que qualquer um veja os detalhes de uma residência.
+                        .requestMatchers("/residences/**").authenticated() // Exige autenticação para criar, editar, apagar ou ver as próprias residências.
+                        .requestMatchers("/profile/student/**").authenticated() // Protege os perfis (melhor que .hasRole("USER") pois permite ADMIN também)
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
