@@ -1,17 +1,17 @@
 package com.moradiasestudantis.gestao_moradias.controller;
 
+import com.moradiasestudantis.gestao_moradias.dto.LoginDto;
 import com.moradiasestudantis.gestao_moradias.dto.RegisterDto;
-import com.moradiasestudantis.gestao_moradias.entity.User;
-import com.moradiasestudantis.gestao_moradias.num.RoleEnum;
-import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
+import com.moradiasestudantis.gestao_moradias.dto.TokenDto;
+import com.moradiasestudantis.gestao_moradias.model.User;
 import com.moradiasestudantis.gestao_moradias.security.TokenService;
-import com.moradiasestudantis.gestao_moradias.security.UserDetailsImpl;
-
+import com.moradiasestudantis.gestao_moradias.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,77 +19,25 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    private UserRepository userRepository;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserService userService;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @PostMapping("/login")
+    public ResponseEntity<TokenDto> login(@RequestBody @Valid LoginDto loginDto) {
+        var usernamePassword = new UsernamePasswordAuthenticationToken(loginDto.email(), loginDto.senha());
+        Authentication auth = this.authenticationManager.authenticate(usernamePassword);
+        var token = this.tokenService.generateToken((User) auth.getPrincipal());
+        return ResponseEntity.ok(new TokenDto(token));
+    }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterDto dto) {
-    if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
-        return ResponseEntity.badRequest().body("Email já está em uso.");
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterDto registerDto) {
+        this.userService.registerUser(registerDto);
+        return ResponseEntity.ok("Usuário registrado com sucesso!");
     }
-
-    User user = new User();
-    user.setEmail(dto.getEmail());
-    user.setSenha(passwordEncoder.encode(dto.getSenha()));
-
-    try {
-        user.setRole(RoleEnum.valueOf(dto.getRole()));
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.badRequest().body("Role inválida.");
-    }
-
-    userRepository.save(user);
-    return ResponseEntity.ok("Usuário registrado com sucesso!");
-}
-
-
-    public static class RegisterRequest {
-        private String email;
-        private String senha;
-
-        public String getEmail() { return email; }
-        public void setEmail(String email) { this.email = email; }
-
-        public String getSenha() { return senha; }
-        public void setSenha(String senha) { this.senha = senha; }
-    }
-
-    public static class LoginRequest {
-        private String email;
-        private String senha;
-
-        public String getEmail() { return email; }
-        public void setEmail(String email) { this.email = email; }
-
-        public String getSenha() { return senha; }
-        public void setSenha(String senha) { this.senha = senha; }
-    }
-
- @Autowired
-private AuthenticationManager authenticationManager;
-
-@Autowired
-private TokenService tokenService;
-
-
-@PostMapping("/login")
-public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-    try {
-        var authToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getSenha());
-        var authentication = authenticationManager.authenticate(authToken);
-
-        var userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        var token = tokenService.gerarToken(userDetails);
-
-        return ResponseEntity.ok(new TokenResponse(token));
-    } catch (Exception e) {
-        return ResponseEntity.status(401).body("Credenciais inválidas");
-    }
-}
-
-
-
-    
 }

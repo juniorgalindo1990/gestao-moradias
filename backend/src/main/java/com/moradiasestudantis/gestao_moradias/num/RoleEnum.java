@@ -6,4 +6,5 @@ public enum RoleEnum {
 	ADMIN,
 	ESTUDANTE,
     PROPRIETARIO
+
 }

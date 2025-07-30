@@ -1,8 +1,10 @@
-<header class="main-header">
-  <h1>Gestão de Moradias</h1>
-  <button *ngIf="authService.isLoggedIn()" (click)="logout()">
-    Sair
-  </button>
+<header>
+  <h1>Plataforma de Gestão de Moradias</h1>
+  <nav>
+    <button *ngIf="authService.isAuthenticated()" (click)="logout()">
+      Logout
+    </button>
+  </nav>
 </header>
 
 <main>

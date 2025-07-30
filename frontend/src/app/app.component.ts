@@ -1,23 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from './auth/auth.service';
 import { CommonModule } from '@angular/common';
-import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterModule, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'frontend';
 
-  constructor(public authService: AuthService, private router: Router) {}
+  authService = inject(AuthService);
+  router = inject(Router);
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
-    alert('Você foi desconectado.');
+    this.router.navigate(['/auth/login']);
   }
 }

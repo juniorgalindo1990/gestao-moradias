@@ -4,8 +4,8 @@ import { RegisterComponent } from './pages/register/register.component';
 import { SearchStudentsComponent } from './pages/search-students/search-students.component'; 
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'search-students', component: SearchStudentsComponent } 
+  { path: 'auth/login', component: LoginComponent },
+  { path: 'auth/register', component: RegisterComponent },
+  { path: 'search-students', component: SearchStudentsComponent },
+  { path: '', redirectTo: 'auth/login', pathMatch: 'full' }
 ];
