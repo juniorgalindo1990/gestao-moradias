@@ -7,24 +7,37 @@ import { HousingListComponent } from './housing-list/housing-list.component';
 import { authGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
-  { path: 'auth/login', component: LoginComponent },
-  { path: 'auth/register', component: RegisterComponent },
-  { path: 'search-students', component: SearchStudentsComponent },
-
+  {
+    path: 'auth/login',
+    component: LoginComponent
+  },
+  {
+    path: 'auth/register',
+    component: RegisterComponent
+  },
+  {
+    path: 'search-students',
+    component: SearchStudentsComponent
+  },
   {
     path: 'profile',
     component: StudentProfileComponent,
     canActivate: [authGuard],
     data: { role: 'USER' }
   },
-
   {
     path: 'housing',
     component: HousingListComponent,
     canActivate: [authGuard],
     data: { role: 'USER' }
   },
-
-  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'auth/login' }
+  {
+    path: '',
+    redirectTo: 'auth/login',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: 'auth/login'
+  }
 ];

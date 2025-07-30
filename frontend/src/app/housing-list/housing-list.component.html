@@ -1,0 +1,12 @@
+<section>
+  <form>
+    <input type="text" placeholder="Filtrar por nome ou cidade" #filter (input)="filterResults(filter.value)">
+  </form>
+</section>
+<section class="results">
+  <app-housing-location
+    *ngFor="let housingLocation of filteredLocationList"
+    [housingLocation]="housingLocation"
+  ></app-housing-location>
+  <p *ngIf="filteredLocationList.length === 0">Nenhuma moradia encontrada com os critérios de busca.</p>
+</section>
