@@ -6,6 +6,9 @@ import com.moradiasestudantis.gestao_moradias.dto.TokenDto;
 import com.moradiasestudantis.gestao_moradias.model.User;
 import com.moradiasestudantis.gestao_moradias.security.TokenService;
 import com.moradiasestudantis.gestao_moradias.service.UserService;
+import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
