@@ -49,4 +49,8 @@ public class TokenService {
         // Token expira em 2 horas
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
+
+    public String getSecret() {
+        return secret;
+    }
 }

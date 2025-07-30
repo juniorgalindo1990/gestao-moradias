@@ -23,27 +23,38 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http
+        return http
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                    // LINHA ADICIONADA: Permite todas as requisições de verificação OPTIONS do navegador
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    
-                    // Permite acesso público ao login e ao registro
-                    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                    
-                    // Protege todo o resto
-                    .anyRequest().authenticated()
+                // Permite requisições de verificação (pré-flight) do navegador
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                // Acesso livre para autenticação
+                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                .requestMatchers("/auth/**").permitAll()
+
+                // Acesso público para ver detalhes de uma residência
+                .requestMatchers(HttpMethod.GET, "/residences/{id}").permitAll()
+
+                // Regras por perfil
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/profile/student/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/residences/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/students/search").hasRole("PROPRIETARIO")
+
+                // Todo o resto precisa estar autenticado
+                .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
-}
+    }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
     @Bean

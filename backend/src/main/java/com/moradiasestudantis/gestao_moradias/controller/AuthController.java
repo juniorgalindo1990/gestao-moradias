@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -42,14 +44,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@RequestBody @Valid LoginDto loginDto) {
-        
-        
+      
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginDto.email(), loginDto.senha());
-        
         Authentication auth = this.authenticationManager.authenticate(usernamePassword);
-
         var token = this.tokenService.generateToken((User) auth.getPrincipal());
-
         return ResponseEntity.ok(new TokenDto(token));
     }
 

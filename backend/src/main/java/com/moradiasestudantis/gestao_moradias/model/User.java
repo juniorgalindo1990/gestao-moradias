@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,6 +27,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoleEnum role;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Residence> residences = new ArrayList<>();
 
     public User() {}
 
@@ -58,4 +62,12 @@ public class User implements UserDetails {
     public void setSenha(String senha) { this.senha = senha; }
     public RoleEnum getRole() { return role; }
     public void setRole(RoleEnum role) { this.role = role; }
+
+    public List<Residence> getResidences() {
+        return residences;
+    }
+
+    public void setResidences(List<Residence> residences) {
+        this.residences = residences;
+    }
 }
