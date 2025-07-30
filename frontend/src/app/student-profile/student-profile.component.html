@@ -1,0 +1,58 @@
+<div class="profile-container">
+  <h2>Meu Perfil</h2>
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="nomeCompleto">Nome Completo</label>
+      <input id="nomeCompleto" type="text" formControlName="nomeCompleto" placeholder="Seu nome completo">
+      <div *ngIf="profileForm.get('nomeCompleto')?.invalid && profileForm.get('nomeCompleto')?.touched" class="error-message">
+        Nome completo é obrigatório.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="cpf">CPF</label>
+      <input id="cpf" type="text" formControlName="cpf" placeholder="Seu CPF (apenas números)">
+      <div *ngIf="profileForm.get('cpf')?.invalid && profileForm.get('cpf')?.touched" class="error-message">
+        <span *ngIf="profileForm.get('cpf')?.errors?.['required']">CPF é obrigatório.</span>
+        <span *ngIf="profileForm.get('cpf')?.errors?.['pattern']">CPF deve conter 11 dígitos numéricos.</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="idade">Idade</label>
+      <input id="idade" type="number" formControlName="idade" placeholder="Sua idade">
+      <div *ngIf="profileForm.get('idade')?.invalid && profileForm.get('idade')?.touched" class="error-message">
+        <span *ngIf="profileForm.get('idade')?.errors?.['required']">Idade é obrigatória.</span>
+        <span *ngIf="profileForm.get('idade')?.errors?.['min']">Você deve ter pelo menos 18 anos.</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="universidade">Universidade</label>
+      <input id="universidade" type="text" formControlName="universidade" placeholder="Nome da sua universidade">
+      <div *ngIf="profileForm.get('universidade')?.invalid && profileForm.get('universidade')?.touched" class="error-message">
+        Universidade é obrigatória.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="curso">Curso</label>
+      <input id="curso" type="text" formControlName="curso" placeholder="Nome do seu curso">
+      <div *ngIf="profileForm.get('curso')?.invalid && profileForm.get('curso')?.touched" class="error-message">
+        Curso é obrigatório.
+      </div>
+    </div>
+
+    <div class="form-group checkbox-group">
+      <input id="aceitaAnimais" type="checkbox" formControlName="aceitaAnimais">
+      <label for="aceitaAnimais">Aceita animais de estimação?</label>
+    </div>
+
+    <div class="form-group checkbox-group">
+      <input id="fumante" type="checkbox" formControlName="fumante">
+      <label for="fumante">É fumante?</label>
+    </div>
+
+    <button type="submit" [disabled]="profileForm.invalid">Salvar Perfil</button>
+  </form>
+</div>

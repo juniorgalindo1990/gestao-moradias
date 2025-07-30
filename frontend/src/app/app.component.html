@@ -1,12 +1,15 @@
-<header>
+<header class="main-header">
   <h1>Plataforma de Gestão de Moradias</h1>
   <nav>
-    <button *ngIf="authService.isAuthenticated()" (click)="logout()">
+    <button *ngIf="authService.isAuthenticated()" [routerLink]="['/housing']">
+      Moradias
+    </button>
+    <button *ngIf="authService.isAuthenticated()" [routerLink]="['/profile']">
+      Meu Perfil
+    </button>
+    <button *ngIf="authService.isAuthenticated()" (click)="authService.logout()">
       Logout
     </button>
   </nav>
 </header>
-
-<main>
-  <router-outlet></router-outlet>
-</main>
+<router-outlet></router-outlet>
