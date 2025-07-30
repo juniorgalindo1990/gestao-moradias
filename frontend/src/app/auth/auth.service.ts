@@ -8,12 +8,12 @@ import { User } from '../user';
 export class AuthService {
   private apiUrl = 'http://localhost:8080/auth';
 
-  async login(email: string, password: string): Promise<boolean> {
+  async login(email: string, senha: string): Promise<boolean> {
     try {
       const response = await fetch(`${this.apiUrl}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, senha}),
       });
 
       if (!response.ok) {

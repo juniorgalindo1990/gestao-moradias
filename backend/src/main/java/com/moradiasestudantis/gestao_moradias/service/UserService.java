@@ -38,4 +38,9 @@ public class UserService implements UserDetailsService {
 
         userRepository.save(newUser);
     }
+
+    public Object findByEmail(String email) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByEmail'");
+    }
 }

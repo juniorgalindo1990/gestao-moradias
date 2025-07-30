@@ -1,13 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+// Importe o RouterModule
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  // Adicione o RouterModule à lista de imports
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -18,21 +20,21 @@ export class LoginComponent {
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]]
+    senha: ['', [Validators.required]]
   });
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      this.authService.login(email, password)
-        .then(success => {
-          if (success) {
-            this.router.navigate(['/home']);
-          } else {
-            alert('Email ou senha inválidos.');
-          }
+      const { email, senha } = this.loginForm.value;
+      this.authService.login(email, senha)
+        .then(response => {
+          alert('Login bem-sucedido!');
+          this.router.navigate(['/dashboard']);
         })
-        .catch(err => alert('Erro no login: ' + err));
+        .catch(err => {
+          console.error('Erro no login:', err);
+          alert('Email ou senha inválidos.');
+        });
     } else {
       this.loginForm.markAllAsTouched();
     }
