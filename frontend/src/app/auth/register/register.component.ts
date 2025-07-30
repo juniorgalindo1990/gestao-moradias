@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -17,24 +18,31 @@ export class RegisterComponent {
   private router = inject(Router);
 
   registerForm: FormGroup = this.fb.group({
-    name: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    senha: ['', [Validators.required, Validators.minLength(6)]],
     role: ['USER']
   });
 
   onSubmit() {
     if (this.registerForm.valid) {
+      console.log('Dados que serão enviados para a API:', this.registerForm.value);
+
       this.authService.register(this.registerForm.value)
-        .then(user => {
-          if (user) {
-            alert('Usuário registrado com sucesso!');
-            this.router.navigate(['/auth/login']);
-          } else {
-            alert('Erro no registro. Verifique os dados.');
-          }
+        .then(response => {
+          // CORREÇÃO: Removemos o 'if (user)'.
+          // Se o código chegou aqui, significa que a API retornou um status de sucesso (2xx).
+
+          alert('Usuário registrado com sucesso!');
+          this.router.navigate(['/auth/login']);
         })
-        .catch(err => alert('Erro no registro: ' + err));
+        .catch(error => {
+          if (error instanceof HttpErrorResponse && error.status === 409) {
+            alert(error.error);
+          } else {
+            console.error('Erro detalhado:', error);
+            alert('Ocorreu um erro inesperado no registro. Tente novamente.');
+          }
+        });
     } else {
       this.registerForm.markAllAsTouched();
     }
