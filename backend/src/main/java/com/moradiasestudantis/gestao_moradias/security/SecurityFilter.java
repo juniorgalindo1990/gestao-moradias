@@ -1,5 +1,6 @@
 package com.moradiasestudantis.gestao_moradias.security;
 
+import com.moradiasestudantis.gestao_moradias.model.User;
 import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -36,7 +37,9 @@ public class SecurityFilter extends OncePerRequestFilter {
             UserDetails user = userRepository.findByEmail(email).orElse(null);
 
             if (user != null) {
-                UserDetailsImpl userDetails = new UserDetailsImpl(user);
+                User userEntity = (User) user; // CAST CORRIGIDO
+                UserDetailsImpl userDetails = new UserDetailsImpl(userEntity);
+
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);

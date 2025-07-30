@@ -1,46 +1,29 @@
 package com.moradiasestudantis.gestao_moradias.service;
 
 import com.moradiasestudantis.gestao_moradias.dto.RegisterDto;
+import com.moradiasestudantis.gestao_moradias.exception.EmailAlreadyExistsException;
 import com.moradiasestudantis.gestao_moradias.model.User;
 import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository repository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        
-        return userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Utilizador não encontrado com o email: " + username));
-    }
-
-    public void registerUser(RegisterDto registerDto) {
-        if (userRepository.findByEmail(registerDto.getEmail()).isPresent()) {
-            throw new RuntimeException("Este email já está em uso.");
+    public void register(RegisterDto data) {
+        if (repository.existsByEmail(data.getEmail())) {
+            throw new EmailAlreadyExistsException("Este e-mail já está cadastrado.");
         }
 
         User newUser = new User();
-        newUser.setEmail(registerDto.getEmail());
-        newUser.setSenha(passwordEncoder.encode(registerDto.getSenha()));
-        newUser.setRole(registerDto.getRole());
+        newUser.setEmail(data.getEmail());
+        newUser.setSenha(new BCryptPasswordEncoder().encode(data.getSenha()));
+        newUser.setRole(data.getRole());
 
-        userRepository.save(newUser);
-    }
-
-    public Object findByEmail(String email) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByEmail'");
+        repository.save(newUser);
     }
 }
