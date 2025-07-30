@@ -3,16 +3,26 @@ package com.moradiasestudantis.gestao_moradias.controller;
 import com.moradiasestudantis.gestao_moradias.dto.LoginDto;
 import com.moradiasestudantis.gestao_moradias.dto.RegisterDto;
 import com.moradiasestudantis.gestao_moradias.dto.TokenDto;
+import com.moradiasestudantis.gestao_moradias.exception.EmailAlreadyExistsException;
 import com.moradiasestudantis.gestao_moradias.model.User;
 import com.moradiasestudantis.gestao_moradias.security.TokenService;
 import com.moradiasestudantis.gestao_moradias.service.UserService;
+import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -27,8 +37,14 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
 
+     @Autowired
+    private UserRepository repository;
+
+    
+
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@RequestBody @Valid LoginDto loginDto) {
+      
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginDto.email(), loginDto.senha());
         Authentication auth = this.authenticationManager.authenticate(usernamePassword);
         var token = this.tokenService.generateToken((User) auth.getPrincipal());
@@ -36,8 +52,22 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody @Valid RegisterDto registerDto) {
-        this.userService.registerUser(registerDto);
-        return ResponseEntity.ok("Usuário registrado com sucesso!");
+    @Transactional
+    public ResponseEntity register(@RequestBody @Valid RegisterDto data){
+        // LÓGICA ATUALIZADA para usar o novo método
+        if(this.repository.existsByEmail(data.getEmail())){
+            throw new EmailAlreadyExistsException("Este e-mail já está cadastrado. Por favor, utilize outro e-mail.");
+        }
+        User newUser = new User();
+
+        String encryptedPassword = new BCryptPasswordEncoder().encode(data.getSenha());
+        newUser.setEmail(data.getEmail());
+        newUser.setSenha(encryptedPassword); // Assumindo que o método se chama setSenha, pode ser setPassword
+        newUser.setRole(data.getRole());
+
+
+        this.repository.save(newUser);
+
+        return ResponseEntity.ok().build();
     }
 }
