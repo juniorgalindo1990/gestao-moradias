@@ -1,0 +1,40 @@
+<div class="container">
+  <h2>Buscar Estudantes</h2>
+
+  <form (ngSubmit)="buscarEstudantes()" #filtroForm="ngForm">
+
+    <div class="form-group">
+      <label for="preferenciaMoradia">Preferência de Moradia:</label>
+      <select id="preferenciaMoradia" name="preferenciaMoradia" [(ngModel)]="filtros.preferenciaMoradia">
+        <option value="">Todas</option>
+        <option value="INDIVIDUAL">Individual</option>
+        <option value="COLETIVA">Coletiva</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>
+        <input type="checkbox" name="aceitaPets" [(ngModel)]="filtros.aceitaPets" />
+        Aceita Pets
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>
+        <input type="checkbox" name="precisaMobilidadeReduzida" [(ngModel)]="filtros.precisaMobilidadeReduzida" />
+        Precisa de Acessibilidade
+      </label>
+    </div>
+
+    <button type="submit">Buscar</button>
+  </form>
+
+  <div class="resultados" *ngIf="estudantes.length > 0">
+    <h3>Resultados:</h3>
+    <ul>
+      <li *ngFor="let estudante of estudantes">
+        {{ estudante.nome }} - {{ estudante.preferenciaMoradia }}
+      </li>
+    </ul>
+  </div>
+</div>
