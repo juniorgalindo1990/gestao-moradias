@@ -1,37 +1,27 @@
 package com.moradiasestudantis.gestao_moradias.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
-@Table(name = "residences")
 public class Residence {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O endereço é obrigatório.")
-    @Column(nullable = false)
-    private String address;
+    private String endereco;
+    private String tipo;
+    private String finalidade;
 
-    private String description;
-
-    @PositiveOrZero
-    private double price;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore // Evita loops infinitos na serialização JSON
-    private User owner;
-
-    // Construtores
     public Residence() {
     }
 
-    // Getters e Setters
+    public Residence(String endereco, String tipo, String finalidade) {
+        this.endereco = endereco;
+        this.tipo = tipo;
+        this.finalidade = finalidade;
+    }
+
     public Long getId() {
         return id;
     }
@@ -40,35 +30,27 @@ public class Residence {
         this.id = id;
     }
 
-    public String getAddress() {
-        return address;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public double getPrice() {
-        return price;
+    public String getFinalidade() {
+        return finalidade;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setFinalidade(String finalidade) {
+        this.finalidade = finalidade;
     }
 }
