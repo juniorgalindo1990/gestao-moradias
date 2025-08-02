@@ -1,12 +1,13 @@
 package com.moradiasestudantis.gestao_moradias.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.moradiasestudantis.gestao_moradias.dto.RegisterDto;
 import com.moradiasestudantis.gestao_moradias.exception.EmailAlreadyExistsException;
 import com.moradiasestudantis.gestao_moradias.model.User;
 import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
