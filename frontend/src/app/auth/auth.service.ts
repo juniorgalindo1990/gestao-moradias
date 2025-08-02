@@ -13,11 +13,11 @@ export class AuthService {
       const response = await fetch(`${this.apiUrl}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, senha}),
+        body: JSON.stringify({ email, senha }),
       });
 
       if (!response.ok) {
-        console.error('Login falhou');
+        console.error('Login falhou:', response.statusText);
         return false;
       }
 
@@ -32,23 +32,25 @@ export class AuthService {
   }
 
   async register(newUser: Omit<User, 'id'>): Promise<User | null> {
-    try {
-      const response = await fetch(`${this.apiUrl}/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newUser),
-      });
+  try {
+    const response = await fetch(`${this.apiUrl}/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newUser),
+    });
 
-      if (!response.ok) {
-        console.error('Registro falhou');
-        return null;
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Erro ao registrar usuário:', error);
+    if (!response.ok) {
+      console.error('Registro falhou');
       return null;
     }
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
+
+  } catch (error) {
+    console.error('Erro ao registrar usuário:', error);
+    return null;
   }
+}
 
   logout(): void {
     localStorage.removeItem('token');

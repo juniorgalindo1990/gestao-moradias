@@ -11,7 +11,7 @@
     <button *ngIf="authService.isAuthenticated()" [routerLink]="['/profile']">
       Meu Perfil
     </button>
-    <button *ngIf="authService.isAuthenticated()" (click)="authService.logout()">
+    <button *ngIf="authService.isAuthenticated()" (click)="logout()">
       Logout
     </button>
   </nav>
