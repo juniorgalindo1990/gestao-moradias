@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
 
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -28,8 +29,8 @@ export class LoginComponent {
       const { email, senha } = this.loginForm.value;
       this.authService.login(email, senha)
         .then(response => {
-          alert('Login bem-sucedido!');
-          this.router.navigate(['/dashboard']);
+          console.log('Login bem-sucedido:', response);
+          this.router.navigate(['/home']);
         })
         .catch(err => {
           console.error('Erro no login:', err);

@@ -23,28 +23,32 @@ export class RegisterComponent {
     role: ['USER']
   });
 
-  onSubmit() {
-    if (this.registerForm.valid) {
+  async onSubmit() {
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
+
+    try {
       console.log('Dados que serão enviados para a API:', this.registerForm.value);
 
-      this.authService.register(this.registerForm.value)
-        .then(response => {
-          // CORREÇÃO: Removemos o 'if (user)'.
-          // Se o código chegou aqui, significa que a API retornou um status de sucesso (2xx).
+      // 1. Espera a conclusão do registro de forma síncrona
+      const response = await this.authService.register(this.registerForm.value);
 
-          alert('Usuário registrado com sucesso!');
-          this.router.navigate(['/auth/login']);
-        })
-        .catch(error => {
-          if (error instanceof HttpErrorResponse && error.status === 409) {
-            alert(error.error);
-          } else {
-            console.error('Erro detalhado:', error);
-            alert('Ocorreu um erro inesperado no registro. Tente novamente.');
-          }
-        });
-    } else {
-      this.registerForm.markAllAsTouched();
+      // 2. Se a linha acima não deu erro, o registro foi um sucesso
+      alert('Usuário registrado com sucesso!');
+      this.router.navigate(['/auth/login']);
+
+    } catch (error) {
+      // 3. Se ocorrer qualquer erro na chamada, ele será capturado aqui
+      if (error instanceof HttpErrorResponse && error.status === 409) {
+        // Erro específico de "usuário já existe"
+        alert(error.error);
+      } else {
+        // Outros erros (rede, servidor, etc.)
+        console.error('Erro detalhado:', error);
+        alert('Ocorreu um erro inesperado no registro. Tente novamente.');
+      }
     }
   }
 }

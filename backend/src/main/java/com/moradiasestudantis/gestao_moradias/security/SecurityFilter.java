@@ -1,11 +1,7 @@
 package com.moradiasestudantis.gestao_moradias.security;
 
-import com.moradiasestudantis.gestao_moradias.model.User;
-import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
+import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -30,22 +31,34 @@ public class SecurityFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
+        // ✅ Ignora rotas públicas
+        String path = request.getServletPath();
+        if (path.startsWith("/auth/login") || path.startsWith("/auth/register")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // ✅ Tenta recuperar e validar o token
         var token = this.recoverToken(request);
 
         if (token != null) {
-            var email = tokenService.validateToken(token);
-            UserDetails user = userRepository.findByEmail(email).orElse(null);
+            try {
+                var email = tokenService.validateToken(token);
+                UserDetails user = userRepository.findByEmail(email).orElse(null);
 
-            if (user != null) {
-                User userEntity = (User) user; // CAST CORRIGIDO
-                UserDetailsImpl userDetails = new UserDetailsImpl(userEntity);
-
-                UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                if (user != null) {
+                    UsernamePasswordAuthenticationToken auth =
+                    new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                        
+                }
+            } catch (Exception e) {
+                // ⚠️ Silencia erros de token inválido sem bloquear o fluxo
+                System.out.println("Token inválido ou erro no filtro: " + e.getMessage());
             }
         }
 
+        // ✅ Continua o fluxo normalmente
         filterChain.doFilter(request, response);
     }
 
