@@ -11,15 +11,20 @@ public record ResidenceDto(
 
         String tipo,
 
-        String finalidade
+        String finalidade,
+
+        String nomeProprietario,
+
+        String emailProprietario
 ) {
-    
     public ResidenceDto(Residence residence) {
         this(
             residence.getId(),
             residence.getEndereco(),
             residence.getTipo(),
-            residence.getFinalidade()
+            residence.getFinalidade(),
+            residence.getOwner().getUsername(),
+            residence.getOwner().getEmail()
         );
     }
 }

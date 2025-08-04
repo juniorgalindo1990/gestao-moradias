@@ -1,5 +1,6 @@
 package com.moradiasestudantis.gestao_moradias.controller;
 
+import com.moradiasestudantis.gestao_moradias.dto.ResidenceDto;
 import com.moradiasestudantis.gestao_moradias.model.Residence;
 import com.moradiasestudantis.gestao_moradias.service.ResidenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,13 @@ public class ResidenceController {
     @GetMapping
     public ResponseEntity<List<Residence>> getAllResidences() {
         return ResponseEntity.ok(residenceService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResidenceDto> getResidenceById(@PathVariable Long id) {
+        Residence residence = residenceService.findById(id);
+        ResidenceDto dto = new ResidenceDto(residence);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping

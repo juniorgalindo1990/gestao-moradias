@@ -33,4 +33,9 @@ public class ResidenceService {
             return residenceRepository.findAll();
         }
     }
+
+    public Residence findById(Long id) {
+        return residenceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Residência não encontrada com ID: " + id));
+    }
 }
