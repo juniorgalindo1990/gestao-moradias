@@ -21,7 +21,7 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(nullable = false)
-    private String name; // novo campo
+    private String name; 
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -38,7 +38,7 @@ public class User implements UserDetails {
 
     public User() {}
 
-    // Spring Security
+    
     @Override public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == RoleEnum.ADMIN) {
             return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
@@ -54,12 +54,12 @@ public class User implements UserDetails {
     @Override public boolean isCredentialsNonExpired() { return true; }
     @Override public boolean isEnabled() { return true; }
 
-    // Getters e Setters
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getName() { return name; } // novo getter
-    public void setName(String name) { this.name = name; } // novo setter
+    public String getName() { return name; } 
+    public void setName(String name) { this.name = name; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }

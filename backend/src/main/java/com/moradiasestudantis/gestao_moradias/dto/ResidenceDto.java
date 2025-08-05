@@ -44,7 +44,6 @@ public class ResidenceDto {
         this.fotos = residence.getFotos();
     }
 
-    // Getters and Setters
 
     public Long getId() {
         return id;

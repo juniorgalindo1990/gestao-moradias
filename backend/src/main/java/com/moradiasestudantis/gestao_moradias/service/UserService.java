@@ -25,14 +25,14 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // Para autenticação do Spring Security
+    
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + email));
     }
 
-    // Para registrar novo usuário
+    
     public void register(RegisterDto data) {
         if (userRepository.existsByEmail(data.getEmail())) {
             throw new EmailAlreadyExistsException("Este e-mail já está cadastrado.");
