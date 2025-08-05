@@ -19,7 +19,7 @@ public class RegisterDto {
     @NotNull
     private RoleEnum role;
 
-    // Getters e Setters
+    
     public String getName() {
         return name;
     }

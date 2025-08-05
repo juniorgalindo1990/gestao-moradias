@@ -5,18 +5,18 @@ public class StudentFilterDto {
     private Boolean garagem;
     private Boolean banheiroPrivativo;
 
-    // Construtor padrão
+    
     public StudentFilterDto() {
     }
 
-    // Construtor com todos os argumentos
+    
     public StudentFilterDto(boolean wifi, Boolean garagem, Boolean banheiroPrivativo) {
         this.wifi = wifi;
         this.garagem = garagem;
         this.banheiroPrivativo = banheiroPrivativo;
     }
 
-    // Getters e Setters
+    
     public boolean getWifi() {
         return wifi;
     }

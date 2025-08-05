@@ -41,12 +41,12 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception) {
-            return ""; // Retorna vazio se o token for inválido
+            return "";
         }
     }
 
     private Instant genExpirationDate() {
-        // Token expira em 2 horas
+        
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 

@@ -27,7 +27,7 @@ public class Student {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    // Construtor padrão
+    
     public Student() {
     }    
 

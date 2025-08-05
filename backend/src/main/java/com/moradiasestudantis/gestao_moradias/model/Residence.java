@@ -13,10 +13,10 @@ public class Residence {
     private Long id;
 
     private String descricao;
-    private String tipo; // apartamento, casa, dormitório ou república
-    private String finalidade; // aluguel individual, aluguel compartilhado ou quarto disponível
+    private String tipo;
+    private String finalidade;
 
-    // Endereço
+    
     private String logradouro;
     private String bairro;
     private String cidade;
@@ -39,7 +39,6 @@ public class Residence {
     @Column(name = "foto_url")
     private List<String> fotos;
 
-    // Getters and Setters
 
     public List<String> getFotos() {
         return fotos;
