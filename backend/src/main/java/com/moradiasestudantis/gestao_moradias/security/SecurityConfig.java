@@ -20,8 +20,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -37,24 +35,23 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
                 // Permite requisições de verificação (pré-flight) do navegador
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/").permitAll()
 
                 // Acesso livre para autenticação
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/auth/").permitAll()
 
                 // Acesso público para ver detalhes de uma residência
                 .requestMatchers(HttpMethod.GET, "/residences/{id}").permitAll()
 
                 // Regras por perfil
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/profile/student/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/residences/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/admin/").hasRole("ADMIN")
+                .requestMatchers("/user/").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/profile/student/").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/residences/").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/students/search").hasRole("PROPRIETARIO")
 
-                // Todo o resto precisa estar autenticado
                 .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -73,9 +70,9 @@ public class SecurityConfig {
         configuration.setAllowCredentials(true);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/", configuration);
         return source;
-}
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -84,6 +81,12 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
