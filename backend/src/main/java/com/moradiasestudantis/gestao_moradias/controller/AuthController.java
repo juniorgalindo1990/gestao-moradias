@@ -59,6 +59,7 @@ public class AuthController {
 
         User newUser = new User();
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.getSenha());
+        newUser.setName(data.getName());
         newUser.setEmail(data.getEmail());
         newUser.setSenha(encryptedPassword);
         newUser.setRole(data.getRole());
@@ -66,5 +67,10 @@ public class AuthController {
         this.repository.save(newUser);
 
         return ResponseEntity.ok(newUser);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        return ResponseEntity.ok().build();
     }
 }

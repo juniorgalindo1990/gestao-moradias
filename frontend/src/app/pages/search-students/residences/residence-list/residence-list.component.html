@@ -1,0 +1,28 @@
+<div class="container">
+  <h2>Residências</h2>
+  <button (click)="createResidence()">Adicionar Residência</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Descrição</th>
+        <th>Tipo</th>
+        <th>Finalidade</th>
+        <th>Valor</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let residence of residences">
+        <td>{{ residence.descricao }}</td>
+        <td>{{ residence.tipo }}</td>
+        <td>{{ residence.finalidade }}</td>
+        <td>{{ residence.valorAluguel | currency:'BRL' }}</td>
+        <td>
+          <button (click)="viewDetails(residence.id)">Ver</button>
+          <button (click)="editResidence(residence.id)">Editar</button>
+          <button (click)="deleteResidence(residence.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

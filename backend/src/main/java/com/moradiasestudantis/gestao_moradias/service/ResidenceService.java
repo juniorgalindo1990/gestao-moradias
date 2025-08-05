@@ -38,4 +38,26 @@ public class ResidenceService {
         return residenceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Residência não encontrada com ID: " + id));
     }
+
+    public Residence update(Long id, Residence residenceDetails) {
+        Residence residence = findById(id);
+        residence.setDescricao(residenceDetails.getDescricao());
+        residence.setTipo(residenceDetails.getTipo());
+        residence.setFinalidade(residenceDetails.getFinalidade());
+        residence.setLogradouro(residenceDetails.getLogradouro());
+        residence.setBairro(residenceDetails.getBairro());
+        residence.setCidade(residenceDetails.getCidade());
+        residence.setEstado(residenceDetails.getEstado());
+        residence.setCep(residenceDetails.getCep());
+        residence.setWifi(residenceDetails.isWifi());
+        residence.setGaragem(residenceDetails.isGaragem());
+        residence.setMobiliado(residenceDetails.isMobiliado());
+        residence.setBanheiroPrivativo(residenceDetails.isBanheiroPrivativo());
+        residence.setValorAluguel(residenceDetails.getValorAluguel());
+        return residenceRepository.save(residence);
+    }
+
+    public void delete(Long id) {
+        residenceRepository.deleteById(id);
+    }
 }

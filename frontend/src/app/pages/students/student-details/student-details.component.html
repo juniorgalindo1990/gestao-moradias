@@ -1,0 +1,15 @@
+<div *ngIf="student">
+  <h2>{{ student.nomeCompleto }}</h2>
+  <p><strong>CPF:</strong> {{ student.cpf }}</p>
+  <p><strong>Data de Nascimento:</strong> {{ student.dataNascimento | date:'dd/MM/yyyy' }}</p>
+  <p><strong>Telefone:</strong> {{ student.telefone }}</p>
+  <p><strong>Curso:</strong> {{ student.curso }}</p>
+  <p><strong>Período:</strong> {{ student.periodoAtual }}</p>
+  <p><strong>Preferências:</strong></p>
+  <ul>
+    <li *ngIf="student.wifi">Wi-Fi</li>
+    <li *ngIf="student.garagem">Garagem</li>
+    <li *ngIf="student.mobiliado">Mobiliado</li>
+    <li *ngIf="student.banheiroPrivativo">Banheiro Privativo</li>
+  </ul>
+</div>

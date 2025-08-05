@@ -7,6 +7,9 @@ import jakarta.validation.constraints.NotNull;
 
 public class RegisterDto {
 
+    @NotBlank
+    private String name;
+
     @NotBlank @Email
     private String email;
 
@@ -17,6 +20,14 @@ public class RegisterDto {
     private RoleEnum role;
 
     // Getters e Setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getEmail() {
         return email;
     }

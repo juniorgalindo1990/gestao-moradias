@@ -1,0 +1,47 @@
+<div class="container">
+  <h2>{{ isEditMode ? 'Editar Estudante' : 'Novo Estudante' }}</h2>
+  <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="nomeCompleto">Nome Completo</label>
+      <input id="nomeCompleto" formControlName="nomeCompleto">
+    </div>
+    <div>
+      <label for="cpf">CPF</label>
+      <input id="cpf" formControlName="cpf">
+    </div>
+    <div>
+      <label for="dataNascimento">Data de Nascimento</label>
+      <input id="dataNascimento" type="date" formControlName="dataNascimento">
+    </div>
+    <div>
+      <label for="telefone">Telefone</label>
+      <input id="telefone" formControlName="telefone">
+    </div>
+    <div>
+      <label for="curso">Curso</label>
+      <input id="curso" formControlName="curso">
+    </div>
+    <div>
+      <label for="periodoAtual">Período Atual</label>
+      <input id="periodoAtual" formControlName="periodoAtual">
+    </div>
+    <div>
+      <p>Preferências:</p>
+      <input id="wifi" type="checkbox" formControlName="wifi">
+      <label for="wifi">Wi-Fi</label>
+    </div>
+    <div>
+      <input id="garagem" type="checkbox" formControlName="garagem">
+      <label for="garagem">Garagem</label>
+    </div>
+    <div>
+      <input id="mobiliado" type="checkbox" formControlName="mobiliado">
+      <label for="mobiliado">Mobiliado</label>
+    </div>
+    <div>
+      <input id="banheiroPrivativo" type="checkbox" formControlName="banheiroPrivativo">
+      <label for="banheiroPrivativo">Banheiro Privativo</label>
+    </div>
+    <button type="submit" [disabled]="studentForm.invalid">Salvar</button>
+  </form>
+</div>

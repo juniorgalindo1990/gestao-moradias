@@ -1,0 +1,58 @@
+<div class="container">
+  <h2>{{ isEditMode ? 'Editar Residência' : 'Nova Residência' }}</h2>
+  <form [formGroup]="residenceForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="descricao">Descrição</label>
+      <input id="descricao" formControlName="descricao">
+    </div>
+    <div>
+      <label for="tipo">Tipo</label>
+      <input id="tipo" formControlName="tipo">
+    </div>
+    <div>
+      <label for="finalidade">Finalidade</label>
+      <input id="finalidade" formControlName="finalidade">
+    </div>
+    <div>
+      <label for="logradouro">Logradouro</label>
+      <input id="logradouro" formControlName="logradouro">
+    </div>
+    <div>
+      <label for="bairro">Bairro</label>
+      <input id="bairro" formControlName="bairro">
+    </div>
+    <div>
+      <label for="cidade">Cidade</label>
+      <input id="cidade" formControlName="cidade">
+    </div>
+    <div>
+      <label for="estado">Estado</label>
+      <input id="estado" formControlName="estado">
+    </div>
+    <div>
+      <label for="cep">CEP</label>
+      <input id="cep" formControlName="cep">
+    </div>
+    <div>
+      <label for="valorAluguel">Valor do Aluguel</label>
+      <input id="valorAluguel" type="number" formControlName="valorAluguel">
+    </div>
+    <div>
+      <input id="wifi" type="checkbox" formControlName="wifi">
+      <label for="wifi">Wi-Fi</label>
+    </div>
+    <div>
+      <input id="garagem" type="checkbox" formControlName="garagem">
+      <label for="garagem">Garagem</label>
+    </div>
+    <div>
+      <input id="mobiliado" type="checkbox" formControlName="mobiliado">
+      <label for="mobiliado">Mobiliado</label>
+    </div>
+    <div>
+      <input id="banheiroPrivativo" type="checkbox" formControlName="banheiroPrivativo">
+      <label for="banheiroPrivativo">Banheiro Privativo</label>
+    </div>
+    <button type="submit" [disabled]="residenceForm.invalid">Salvar</button>
+  </form>
+</div>

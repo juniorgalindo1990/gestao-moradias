@@ -1,0 +1,17 @@
+<div *ngIf="residence">
+  <h2>{{ residence.descricao }}</h2>
+  <p><strong>Tipo:</strong> {{ residence.tipo }}</p>
+  <p><strong>Finalidade:</strong> {{ residence.finalidade }}</p>
+  <p><strong>Endereço:</strong> {{ residence.logradouro }}, {{ residence.bairro }}, {{ residence.cidade }} - {{ residence.estado }}, {{ residence.cep }}</p>
+  <p><strong>Valor do Aluguel:</strong> {{ residence.valorAluguel | currency:'BRL' }}</p>
+  <p><strong>Comodidades:</strong></p>
+  <ul>
+    <li *ngIf="residence.wifi">Wi-Fi</li>
+    <li *ngIf="residence.garagem">Garagem</li>
+    <li *ngIf="residence.mobiliado">Mobiliado</li>
+    <li *ngIf="residence.banheiroPrivativo">Banheiro Privativo</li>
+  </ul>
+  <p><strong>Contato do Proprietário:</strong></p>
+  <p><strong>Nome:</strong> {{ residence.nomeProprietario }}</p>
+  <p><strong>Email:</strong> {{ residence.emailProprietario }}</p>
+</div>

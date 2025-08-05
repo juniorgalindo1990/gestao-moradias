@@ -1,0 +1,26 @@
+<div class="container">
+  <h2>Estudantes</h2>
+  <button (click)="createStudent()">Adicionar Estudante</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Curso</th>
+        <th>Período</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students">
+        <td>{{ student.nomeCompleto }}</td>
+        <td>{{ student.curso }}</td>
+        <td>{{ student.periodoAtual }}</td>
+        <td>
+          <button (click)="viewDetails(student.id)">Ver</button>
+          <button (click)="editStudent(student.id)">Editar</button>
+          <button (click)="deleteStudent(student.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
