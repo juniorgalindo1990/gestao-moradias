@@ -1,5 +1,21 @@
 <div class="container">
   <h2>Residências</h2>
+  <div class="filter-container">
+    <select [(ngModel)]="filterType">
+      <option value="">Todos os Tipos</option>
+      <option value="apartamento">Apartamento</option>
+      <option value="casa">Casa</option>
+      <option value="dormitorio">Dormitório</option>
+      <option value="republica">República</option>
+    </select>
+    <select [(ngModel)]="filterPurpose">
+      <option value="">Todas as Finalidades</option>
+      <option value="aluguel_individual">Aluguel Individual</option>
+      <option value="aluguel_compartilhado">Aluguel Compartilhado</option>
+      <option value="quarto_disponivel">Quarto Disponível</option>
+    </select>
+    <button (click)="applyFilters()">Filtrar</button>
+  </div>
   <button (click)="createResidence()">Adicionar Residência</button>
   <table>
     <thead>

@@ -15,4 +15,5 @@ export interface Residence {
   valorAluguel: number;
   nomeProprietario: string;
   emailProprietario: string;
+  fotos: string[];
 }

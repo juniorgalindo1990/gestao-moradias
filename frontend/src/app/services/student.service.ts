@@ -42,6 +42,9 @@ export class StudentService {
     if (filter.banheiroPrivativo) {
       params = params.set('banheiroPrivativo', filter.banheiroPrivativo);
     }
+    if (filter.mobiliado) {
+      params = params.set('mobiliado', filter.mobiliado);
+    }
     return this.http.get<Student[]>(`${this.apiUrl}/search`, { params });
   }
 }

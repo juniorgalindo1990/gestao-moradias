@@ -1,40 +1,38 @@
 <div class="container">
-  <h2>Buscar Estudantes</h2>
+  <h2>Buscar Estudantes por Preferências</h2>
 
-  <form (ngSubmit)="buscarEstudantes()" #filtroForm="ngForm">
-
-    <div class="form-group">
-      <label for="preferenciaMoradia">Preferência de Moradia:</label>
-      <select id="preferenciaMoradia" name="preferenciaMoradia" [(ngModel)]="filtros.preferenciaMoradia">
-        <option value="">Todas</option>
-        <option value="INDIVIDUAL">Individual</option>
-        <option value="COLETIVA">Coletiva</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>
-        <input type="checkbox" name="aceitaPets" [(ngModel)]="filtros.aceitaPets" />
-        Aceita Pets
-      </label>
-    </div>
-
-    <div class="form-group">
-      <label>
-        <input type="checkbox" name="precisaMobilidadeReduzida" [(ngModel)]="filtros.precisaMobilidadeReduzida" />
-        Precisa de Acessibilidade
-      </label>
-    </div>
-
-    <button type="submit">Buscar</button>
-  </form>
+  <div class="filtros">
+    <label>
+      Preferência de Moradia:
+      <input type="text" [(ngModel)]="filtros.preferenciaMoradia" name="preferenciaMoradia">
+    </label>
+    <label>
+      <input type="checkbox" [(ngModel)]="filtros.aceitaPets" name="aceitaPets">
+      Aceita Pets
+    </label>
+    <label>
+      <input type="checkbox" [(ngModel)]="filtros.precisaMobilidadeReduzida" name="precisaMobilidadeReduzida">
+      Necessita de Mobilidade Reduzida
+    </label>
+    <button (click)="buscarEstudantes()">Buscar</button>
+  </div>
 
   <div class="resultados" *ngIf="estudantes.length > 0">
-    <h3>Resultados:</h3>
+    <h3>Resultados da Busca</h3>
     <ul>
       <li *ngFor="let estudante of estudantes">
-        {{ estudante.nome }} - {{ estudante.preferenciaMoradia }}
+        <p><strong>Nome:</strong> {{ estudante.nomeCompleto }}</p>
+        <p><strong>Curso:</strong> {{ estudante.curso }}</p>
+        <p><strong>Preferências:</strong>
+          <span *ngIf="estudante.wifi">Wi-Fi</span>
+          <span *ngIf="estudante.garagem">, Garagem</span>
+          <span *ngIf="estudante.mobiliado">, Mobiliado</span>
+          <span *ngIf="estudante.banheiroPrivativo">, Banheiro Privativo</span>
+        </p>
       </li>
     </ul>
+  </div>
+  <div *ngIf="estudantes.length === 0">
+    <p>Nenhum estudante encontrado com os filtros selecionados.</p>
   </div>
 </div>

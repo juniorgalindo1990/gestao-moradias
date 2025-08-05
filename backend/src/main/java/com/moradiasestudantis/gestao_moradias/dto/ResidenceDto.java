@@ -2,6 +2,7 @@ package com.moradiasestudantis.gestao_moradias.dto;
 
 import com.moradiasestudantis.gestao_moradias.model.Residence;
 import java.math.BigDecimal;
+import java.util.List;
 
 public class ResidenceDto {
 
@@ -21,6 +22,7 @@ public class ResidenceDto {
     private BigDecimal valorAluguel;
     private String nomeProprietario;
     private String emailProprietario;
+    private List<String> fotos;
 
     public ResidenceDto(Residence residence) {
         this.id = residence.getId();
@@ -39,6 +41,7 @@ public class ResidenceDto {
         this.valorAluguel = residence.getValorAluguel();
         this.nomeProprietario = residence.getOwner().getName();
         this.emailProprietario = residence.getOwner().getEmail();
+        this.fotos = residence.getFotos();
     }
 
     // Getters and Setters
@@ -169,5 +172,13 @@ public class ResidenceDto {
 
     public void setEmailProprietario(String emailProprietario) {
         this.emailProprietario = emailProprietario;
+    }
+
+    public List<String> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<String> fotos) {
+        this.fotos = fotos;
     }
 }

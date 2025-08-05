@@ -53,12 +53,14 @@ export const routes: Routes = [
     path: 'residences/new',
     component: ResidenceFormComponent,
     canActivate: [authGuard],
+    data: { role: 'PROPRIETARIO' },
     title: 'Nova Residência'
   },
   {
     path: 'residences/edit/:id',
     component: ResidenceFormComponent,
     canActivate: [authGuard],
+    data: { role: 'PROPRIETARIO' },
     title: 'Editar Residência'
   },
   {
@@ -77,12 +79,14 @@ export const routes: Routes = [
     path: 'students/new',
     component: StudentFormComponent,
     canActivate: [authGuard],
+    data: { role: 'ESTUDANTE' },
     title: 'Novo Estudante'
   },
   {
     path: 'students/edit/:id',
     component: StudentFormComponent,
     canActivate: [authGuard],
+    data: { role: 'ESTUDANTE' },
     title: 'Editar Estudante'
   },
   {

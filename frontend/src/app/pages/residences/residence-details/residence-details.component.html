@@ -1,4 +1,4 @@
-<div *ngIf="residence">
+<div class="container" *ngIf="residence">
   <h2>{{ residence.descricao }}</h2>
   <p><strong>Tipo:</strong> {{ residence.tipo }}</p>
   <p><strong>Finalidade:</strong> {{ residence.finalidade }}</p>
@@ -14,4 +14,11 @@
   <p><strong>Contato do Proprietário:</strong></p>
   <p><strong>Nome:</strong> {{ residence.nomeProprietario }}</p>
   <p><strong>Email:</strong> {{ residence.emailProprietario }}</p>
+  
+  <div class="photos" *ngIf="residence.fotos && residence.fotos.length > 0">
+    <h3>Fotos</h3>
+    <div class="photo-gallery">
+      <img *ngFor="let foto of residence.fotos" [src]="foto" alt="Foto da residência">
+    </div>
+  </div>
 </div>

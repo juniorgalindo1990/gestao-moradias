@@ -53,6 +53,16 @@
       <input id="banheiroPrivativo" type="checkbox" formControlName="banheiroPrivativo">
       <label for="banheiroPrivativo">Banheiro Privativo</label>
     </div>
+
+    <div formArrayName="fotos">
+      <h3>Fotos</h3>
+      <div *ngFor="let foto of fotos.controls; let i=index">
+        <input [formControlName]="i" placeholder="URL da Foto">
+        <button type="button" (click)="removeFoto(i)">Remover</button>
+      </div>
+      <button type="button" (click)="addFoto()">Adicionar Foto</button>
+    </div>
+
     <button type="submit" [disabled]="residenceForm.invalid">Salvar</button>
   </form>
 </div>

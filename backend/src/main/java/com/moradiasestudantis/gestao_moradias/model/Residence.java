@@ -3,6 +3,7 @@ package com.moradiasestudantis.gestao_moradias.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 public class Residence {
@@ -33,7 +34,20 @@ public class Residence {
     @JsonBackReference
     private User owner;
 
+    @ElementCollection
+    @CollectionTable(name = "residence_fotos", joinColumns = @JoinColumn(name = "residence_id"))
+    @Column(name = "foto_url")
+    private List<String> fotos;
+
     // Getters and Setters
+
+    public List<String> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<String> fotos) {
+        this.fotos = fotos;
+    }
 
     public Long getId() {
         return id;

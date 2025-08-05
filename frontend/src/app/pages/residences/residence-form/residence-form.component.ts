@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResidenceService } from '../../../services/residence.service';
 import { Residence } from '../../../model/residence.model';
@@ -36,8 +36,21 @@ export class ResidenceFormComponent implements OnInit {
       garagem: [false],
       mobiliado: [false],
       banheiroPrivativo: [false],
-      valorAluguel: [null, Validators.required]
+      valorAluguel: [null, Validators.required],
+      fotos: this.fb.array([])
     });
+  }
+
+  get fotos() {
+    return this.residenceForm.get('fotos') as FormArray;
+  }
+
+  addFoto() {
+    this.fotos.push(this.fb.control(''));
+  }
+
+  removeFoto(index: number) {
+    this.fotos.removeAt(index);
   }
 
   ngOnInit(): void {
@@ -46,6 +59,11 @@ export class ResidenceFormComponent implements OnInit {
       this.isEditMode = true;
       this.residenceService.getResidence(this.residenceId).subscribe(data => {
         this.residenceForm.patchValue(data);
+        if (data.fotos) {
+          data.fotos.forEach(foto => {
+            this.fotos.push(this.fb.control(foto));
+          });
+        }
       });
     }
   }
