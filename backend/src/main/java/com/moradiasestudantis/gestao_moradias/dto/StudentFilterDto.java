@@ -33,11 +33,11 @@ public class StudentFilterDto {
         this.garagem = garagem;
     }
 
-    public Boolean getbanheiroPrivativo() {
+    public Boolean getBanheiroPrivativo() {
         return banheiroPrivativo;
     }
 
-    public void setbanheiroPrivativo(Boolean banheiroPrivativo) {
+    public void setBanheiroPrivativo(Boolean banheiroPrivativo) {
         this.banheiroPrivativo = banheiroPrivativo;
     }
 }

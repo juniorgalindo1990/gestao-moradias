@@ -1,0 +1,44 @@
+<div class="container">
+  <h2>Residências</h2>
+  <div class="filter-container">
+    <select [(ngModel)]="filterType">
+      <option value="">Todos os Tipos</option>
+      <option value="apartamento">Apartamento</option>
+      <option value="casa">Casa</option>
+      <option value="dormitorio">Dormitório</option>
+      <option value="republica">República</option>
+    </select>
+    <select [(ngModel)]="filterPurpose">
+      <option value="">Todas as Finalidades</option>
+      <option value="aluguel_individual">Aluguel Individual</option>
+      <option value="aluguel_compartilhado">Aluguel Compartilhado</option>
+      <option value="quarto_disponivel">Quarto Disponível</option>
+    </select>
+    <button (click)="applyFilters()">Filtrar</button>
+  </div>
+  <button (click)="createResidence()">Adicionar Residência</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Descrição</th>
+        <th>Tipo</th>
+        <th>Finalidade</th>
+        <th>Valor</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let residence of residences">
+        <td>{{ residence.descricao }}</td>
+        <td>{{ residence.tipo }}</td>
+        <td>{{ residence.finalidade }}</td>
+        <td>{{ residence.valorAluguel | currency:'BRL' }}</td>
+        <td>
+          <button (click)="viewDetails(residence.id)">Ver</button>
+          <button (click)="editResidence(residence.id)">Editar</button>
+          <button (click)="deleteResidence(residence.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

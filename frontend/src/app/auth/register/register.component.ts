@@ -18,9 +18,10 @@ export class RegisterComponent {
   private router = inject(Router);
 
   registerForm: FormGroup = this.fb.group({
+    name: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     senha: ['', [Validators.required, Validators.minLength(6)]],
-    role: ['USER']
+    role: ['ESTUDANTE', [Validators.required]]
   });
 
   async onSubmit() {
@@ -32,20 +33,20 @@ export class RegisterComponent {
     try {
       console.log('Dados que serão enviados para a API:', this.registerForm.value);
 
-      // 1. Espera a conclusão do registro de forma síncrona
+      
       const response = await this.authService.register(this.registerForm.value);
 
-      // 2. Se a linha acima não deu erro, o registro foi um sucesso
+      
       alert('Usuário registrado com sucesso!');
       this.router.navigate(['/auth/login']);
 
     } catch (error) {
-      // 3. Se ocorrer qualquer erro na chamada, ele será capturado aqui
+      
       if (error instanceof HttpErrorResponse && error.status === 409) {
-        // Erro específico de "usuário já existe"
+        
         alert(error.error);
       } else {
-        // Outros erros (rede, servidor, etc.)
+        
         console.error('Erro detalhado:', error);
         alert('Ocorreu um erro inesperado no registro. Tente novamente.');
       }

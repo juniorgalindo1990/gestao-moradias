@@ -3,6 +3,14 @@
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
     <div>
+      <label for="name">Nome</label>
+      <input id="name" type="text" formControlName="name" placeholder="Digite seu nome">
+      <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="error-message">
+        <span *ngIf="registerForm.get('name')?.errors?.['required']">Nome é obrigatório.</span>
+      </div>
+    </div>
+
+    <div>
       <label for="email">Email</label>
       <input id="email" type="email" formControlName="email" placeholder="Digite seu email">
       <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error-message">
@@ -17,6 +25,18 @@
       <div *ngIf="registerForm.get('senha')?.invalid && registerForm.get('senha')?.touched" class="error-message">
         <span *ngIf="registerForm.get('senha')?.errors?.['required']">Senha é obrigatória.</span>
         <span *ngIf="registerForm.get('senha')?.errors?.['minlength']">A senha deve ter no mínimo 6 caracteres.</span>
+      </div>
+    </div>
+
+    <div>
+      <label for="role">Tipo de Usuário</label>
+      <select id="role" formControlName="role">
+        <option value="ESTUDANTE">Estudante</option>
+        <option value="PROPRIETARIO">Proprietário</option>
+        <option value="ADMIN">Administrador</option>
+      </select>
+      <div *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched" class="error-message">
+        <span *ngIf="registerForm.get('role')?.errors?.['required']">Tipo de usuário é obrigatório.</span>
       </div>
     </div>
 

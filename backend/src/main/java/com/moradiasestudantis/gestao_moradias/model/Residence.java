@@ -2,6 +2,8 @@ package com.moradiasestudantis.gestao_moradias.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 public class Residence {
@@ -10,22 +12,41 @@ public class Residence {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String endereco;
-    private String tipo;
-    private String finalidade;
+    private String descricao;
+    private String tipo; // apartamento, casa, dormitório ou república
+    private String finalidade; // aluguel individual, aluguel compartilhado ou quarto disponível
+
+    // Endereço
+    private String logradouro;
+    private String bairro;
+    private String cidade;
+    private String estado;
+    private String cep;
+
+    private boolean wifi;
+    private boolean garagem;
+    private boolean mobiliado;
+    private boolean banheiroPrivativo;
+    private BigDecimal valorAluguel;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User owner;
 
-    public Residence() {
+    @ElementCollection
+    @CollectionTable(name = "residence_fotos", joinColumns = @JoinColumn(name = "residence_id"))
+    @Column(name = "foto_url")
+    private List<String> fotos;
+
+    // Getters and Setters
+
+    public List<String> getFotos() {
+        return fotos;
     }
 
-    public Residence(String endereco, String tipo, String finalidade) {
-        this.endereco = endereco;
-        this.tipo = tipo;
-        this.finalidade = finalidade;
+    public void setFotos(List<String> fotos) {
+        this.fotos = fotos;
     }
 
     public Long getId() {
@@ -36,12 +57,12 @@ public class Residence {
         this.id = id;
     }
 
-    public String getEndereco() {
-        return endereco;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public String getTipo() {
@@ -60,7 +81,86 @@ public class Residence {
         this.finalidade = finalidade;
     }
 
-    
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public boolean isWifi() {
+        return wifi;
+    }
+
+    public void setWifi(boolean wifi) {
+        this.wifi = wifi;
+    }
+
+    public boolean isGaragem() {
+        return garagem;
+    }
+
+    public void setGaragem(boolean garagem) {
+        this.garagem = garagem;
+    }
+
+    public boolean isMobiliado() {
+        return mobiliado;
+    }
+
+    public void setMobiliado(boolean mobiliado) {
+        this.mobiliado = mobiliado;
+    }
+
+    public boolean isBanheiroPrivativo() {
+        return banheiroPrivativo;
+    }
+
+    public void setBanheiroPrivativo(boolean banheiroPrivativo) {
+        this.banheiroPrivativo = banheiroPrivativo;
+    }
+
+    public BigDecimal getValorAluguel() {
+        return valorAluguel;
+    }
+
+    public void setValorAluguel(BigDecimal valorAluguel) {
+        this.valorAluguel = valorAluguel;
+    }
+
     public User getOwner() {
         return owner;
     }

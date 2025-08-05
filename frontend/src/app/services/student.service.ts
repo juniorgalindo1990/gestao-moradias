@@ -1,30 +1,50 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Student } from '../model/student.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
+  private apiUrl = 'http://localhost:8080/students';
 
-  private readonly API = 'http://localhost:8080/students/search';
+  constructor(private http: HttpClient) { }
 
-  constructor(private http: HttpClient) {}
+  getStudents(): Observable<Student[]> {
+    return this.http.get<Student[]>(this.apiUrl);
+  }
 
-  buscarEstudantes(filtros: any): Observable<any[]> {
+  getStudent(id: number): Observable<Student> {
+    return this.http.get<Student>(`${this.apiUrl}/${id}`);
+  }
+
+  createStudent(student: Student): Observable<Student> {
+    return this.http.post<Student>(this.apiUrl, student);
+  }
+
+  updateStudent(id: number, student: Student): Observable<Student> {
+    return this.http.put<Student>(`${this.apiUrl}/${id}`, student);
+  }
+
+  deleteStudent(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  searchStudents(filter: any): Observable<Student[]> {
     let params = new HttpParams();
-
-    if (filtros.preferenciaMoradia) {
-      params = params.set('preferenciaMoradia', filtros.preferenciaMoradia);
+    if (filter.wifi) {
+      params = params.set('wifi', filter.wifi);
     }
-    if (filtros.aceitaPets !== undefined) {
-      params = params.set('aceitaPets', filtros.aceitaPets);
+    if (filter.garagem) {
+      params = params.set('garagem', filter.garagem);
     }
-    if (filtros.precisaMobilidadeReduzida !== undefined) {
-      params = params.set('precisaMobilidadeReduzida', filtros.precisaMobilidadeReduzida);
+    if (filter.banheiroPrivativo) {
+      params = params.set('banheiroPrivativo', filter.banheiroPrivativo);
     }
-
-  return this.http.get<any[]>(this.API, { params });
-}
-
+    if (filter.mobiliado) {
+      params = params.set('mobiliado', filter.mobiliado);
+    }
+    return this.http.get<Student[]>(`${this.apiUrl}/search`, { params });
+  }
 }

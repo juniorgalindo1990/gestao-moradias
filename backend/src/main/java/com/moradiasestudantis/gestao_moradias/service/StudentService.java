@@ -3,14 +3,10 @@ package com.moradiasestudantis.gestao_moradias.service;
 import com.moradiasestudantis.gestao_moradias.dto.StudentDto;
 import com.moradiasestudantis.gestao_moradias.dto.StudentFilterDto;
 import com.moradiasestudantis.gestao_moradias.model.Student;
-import com.moradiasestudantis.gestao_moradias.model.User;
 import com.moradiasestudantis.gestao_moradias.repository.StudentRepository;
-import com.moradiasestudantis.gestao_moradias.repository.UserRepository;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,43 +20,40 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    @Transactional
+    public Student createStudent(Student student) {
+        return studentRepository.save(student);
+    }
 
     @Transactional(readOnly = true)
-    public StudentDto getProfile(UserDetails userDetails) {
-        User user = userRepository.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
-
-        Student student = studentRepository.findByUserId(user.getId())
-                .orElseThrow(() -> new RuntimeException("Perfil de estudante não encontrado"));
-
+    public StudentDto getStudentById(Long id) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Estudante não encontrado com ID: " + id));
         return new StudentDto(student);
     }
 
     @Transactional
-    public StudentDto createOrUpdateProfile(StudentDto profileDto, UserDetails userDetails) {
-        User user = userRepository.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+    public Student updateStudent(Long id, Student studentDetails) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Estudante não encontrado com ID: " + id));
 
-        Student student = studentRepository.findByUserId(user.getId())
-                .orElse(new Student());
+        student.setNomeCompleto(studentDetails.getNomeCompleto());
+        student.setCpf(studentDetails.getCpf());
+        student.setDataNascimento(studentDetails.getDataNascimento());
+        student.setTelefone(studentDetails.getTelefone());
+        student.setCurso(studentDetails.getCurso());
+        student.setPeriodoAtual(studentDetails.getPeriodoAtual());
+        student.setWifi(studentDetails.isWifi());
+        student.setGaragem(studentDetails.isGaragem());
+        student.setMobiliado(studentDetails.isMobiliado());
+        student.setBanheiroPrivativo(studentDetails.isBanheiroPrivativo());
 
-        student.setUser(user);
-        student.setNomeCompleto(profileDto.nomeCompleto());
-        student.setCpf(profileDto.cpf());
-        student.setDataNascimento(profileDto.dataNascimento());
-        student.setTelefone(profileDto.telefone());
-        student.setPeriodoAtual(profileDto.periodoAtual());
-        student.setCurso(profileDto.curso());
-        student.setWifi(profileDto.wifi());
-        student.setGaragem(profileDto.garagem());
-        student.setMobiliado(profileDto.mobiliado());
-        student.setBanheiroPrivativo(profileDto.banheiroPrivativo());
+        return studentRepository.save(student);
+    }
 
-        studentRepository.save(student);
-
-        return new StudentDto(student);
+    @Transactional
+    public void deleteStudent(Long id) {
+        studentRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
@@ -68,19 +61,20 @@ public class StudentService {
         Specification<Student> spec = (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (filter.getWifi() != true) {
+            if (filter.getWifi()) {
                 predicates.add(builder.equal(root.get("wifi"), filter.getWifi()));
             }
             if (filter.getGaragem() != null) {
                 predicates.add(builder.equal(root.get("garagem"), filter.getGaragem()));
             }
-            if (filter.getbanheiroPrivativo() != null) {
-                predicates.add(builder.equal(root.get("banheiroPrivativo"), filter.getbanheiroPrivativo()));
+            if (filter.getBanheiroPrivativo() != null) {
+                predicates.add(builder.equal(root.get("banheiroPrivativo"), filter.getBanheiroPrivativo()));
             }
 
             return builder.and(predicates.toArray(new Predicate[0]));
         };
-        List<StudentDto> students = studentRepository.findAll(spec).stream().map(StudentDto::new).collect(Collectors.toList());
-        return students;
+        return studentRepository.findAll(spec).stream()
+                .map(StudentDto::new)
+                .collect(Collectors.toList());
     }
 }

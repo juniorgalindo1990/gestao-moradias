@@ -40,4 +40,15 @@ public class ResidenceController {
     public ResponseEntity<Residence> createResidence(@RequestBody Residence residence) {
         return ResponseEntity.ok(residenceService.save(residence));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Residence> updateResidence(@PathVariable Long id, @RequestBody Residence residence) {
+        return ResponseEntity.ok(residenceService.update(id, residence));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteResidence(@PathVariable Long id) {
+        residenceService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
