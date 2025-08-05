@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ResidenceService } from '../../../services/residence.service';
-import { Residence } from '../../../models/residence.model';
+import { Residence } from '../../../model/residence.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './residence-details.component.html',
-  styleUrls: ['./residence-details.component.css']
 })
 export class ResidenceDetailsComponent implements OnInit {
   residence: Residence | null = null;

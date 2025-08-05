@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ResidenceService } from '../../../services/residence.service';
-import { Residence } from '../../../models/residence.model';
+import { Residence } from '../../../model/residence.model';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 

@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResidenceService } from '../../../services/residence.service';
-import { Residence } from '../../../models/residence.model';
+import { Residence } from '../../../model/residence.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
