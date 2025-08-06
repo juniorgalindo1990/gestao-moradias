@@ -3,6 +3,11 @@ package com.moradiasestudantis.gestao_moradias.model;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "student_profiles")
@@ -12,11 +17,26 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Nome completo é obrigatório")
     private String nomeCompleto;
+    
+    @NotBlank(message = "CPF é obrigatório")
+    @Size(min = 11, max = 11, message = "CPF deve ter 11 caracteres")
+    @Pattern(regexp = "^[0-9]+$", message = "CPF deve conter apenas números")
     private String cpf;
+
+    @NotNull(message = "Data de nascimento é obrigatória")
+    @Past(message = "Data de nascimento deve ser no passado")
     private LocalDate dataNascimento;
+
+    @NotBlank(message = "Telefone é obrigatório")
+    @Pattern(regexp = "^[0-9]{10,11}$", message = "Telefone deve ter 10 ou 11 dígitos")
     private String telefone;
+
+    @NotBlank(message = "Período atual é obrigatório")
     private String periodoAtual;
+
+    @NotBlank(message = "Curso é obrigatório")
     private String curso;
     private boolean wifi;
     private boolean garagem;
