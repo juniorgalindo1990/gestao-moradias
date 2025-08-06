@@ -2,6 +2,9 @@ package com.moradiasestudantis.gestao_moradias.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -12,24 +15,40 @@ public class Residence {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Descrição é obrigatória")
     private String descricao;
+
+    @NotBlank(message = "Tipo é obrigatório")
     private String tipo;
+
+    @NotBlank(message = "Finalidade é obrigatória")
     private String finalidade;
 
-    
+    @NotBlank(message = "Logradouro é obrigatório")
     private String logradouro;
+
+    @NotBlank(message = "Bairro é obrigatório")
     private String bairro;
+
+    @NotBlank(message = "Cidade é obrigatória")
     private String cidade;
+
+    @NotBlank(message = "Estado é obrigatório")
     private String estado;
+
+    @NotBlank(message = "CEP é obrigatório")
+    @Size(min = 8, max = 8, message = "CEP deve ter 8 caracteres")
     private String cep;
 
     private boolean wifi;
     private boolean garagem;
     private boolean mobiliado;
     private boolean banheiroPrivativo;
+
+    @NotNull(message = "Valor do aluguel é obrigatório")
     private BigDecimal valorAluguel;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User owner;

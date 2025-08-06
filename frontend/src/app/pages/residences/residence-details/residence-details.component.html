@@ -11,9 +11,12 @@
     <li *ngIf="residence.mobiliado">Mobiliado</li>
     <li *ngIf="residence.banheiroPrivativo">Banheiro Privativo</li>
   </ul>
-  <p><strong>Contato do Proprietário:</strong></p>
-  <p><strong>Nome:</strong> {{ residence.nomeProprietario }}</p>
-  <p><strong>Email:</strong> {{ residence.emailProprietario }}</p>
+
+  <div class="contact-info" *ngIf="residence.emailProprietario">
+    <p><strong>Contato do Proprietário:</strong></p>
+    <p><strong>Nome:</strong> {{ residence.nomeProprietario }}</p>
+    <p><strong>Email:</strong> <a [href]="'mailto:' + residence.emailProprietario">{{ residence.emailProprietario }}</a></p>
+  </div>
   
   <div class="photos" *ngIf="residence.fotos && residence.fotos.length > 0">
     <h3>Fotos</h3>
