@@ -30,10 +30,10 @@ export const routes: Routes = [
     title: 'Home'
   },
   {
-    path: 'profile',
+    path: 'profile/student',
     component: StudentProfileComponent,
     canActivate: [authGuard],
-    data: { role: 'USER' }
+    data: { role: 'ESTUDANTE' }
   },
   {
     path: 'auth/register',

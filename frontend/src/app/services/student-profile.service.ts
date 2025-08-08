@@ -14,6 +14,9 @@ export class StudentProfileService {
 
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
+    const role = this.authService.hasRole('ESTUDANTE');
+    console.log('Token atual:', token);
+    console.log('Role atual:', role);
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
