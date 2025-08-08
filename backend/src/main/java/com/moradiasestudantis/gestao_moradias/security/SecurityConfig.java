@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -39,13 +38,16 @@ public class SecurityConfig {
                 
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                .requestMatchers("/auth/").permitAll()
+                .requestMatchers("/auth/**").permitAll()
                 
                 .requestMatchers(HttpMethod.GET, "/residences/{id}").permitAll()
                 
                 .requestMatchers("/admin/").hasRole("ADMIN")
                 .requestMatchers("/user/").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/profile/student/").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/profile/student", "/profile/student/**").hasRole("ESTUDANTE")
+                .requestMatchers(HttpMethod.POST, "/profile/student", "/profile/student/**").hasRole("ESTUDANTE")
+                .requestMatchers(HttpMethod.PUT, "/profile/student", "/profile/student/**").hasRole("ESTUDANTE")
+                .requestMatchers(HttpMethod.DELETE, "/profile/student", "/profile/student/**").hasRole("ESTUDANTE")
                 .requestMatchers("/residences/").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/students/search").hasRole("PROPRIETARIO")
 
@@ -67,7 +69,7 @@ public class SecurityConfig {
         configuration.setAllowCredentials(true);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/", configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
@@ -75,13 +77,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    
+   
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
