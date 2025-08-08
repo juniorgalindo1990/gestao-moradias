@@ -20,4 +20,8 @@ export class AppComponent {
     this.authService.logout();
     this.router.navigate(['/auth/login']);
   }
+
+  meuPerfil(): void {
+    this.router.navigate(['profile/student']);
+  }
 }

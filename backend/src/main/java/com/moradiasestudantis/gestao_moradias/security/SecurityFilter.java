@@ -31,8 +31,8 @@ public class SecurityFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        String path = request.getServletPath();
-        if (path.startsWith("/auth/login") || path.startsWith("/auth/register")) {
+        String path = request.getRequestURI();
+        if (path.equals("/auth/login") || path.equals("/auth/register")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -41,26 +41,29 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if (token != null) {
             try {
-                var email = tokenService.validateToken(token);
-                UserDetails user = userRepository.findByEmail(email).orElse(null);
-
-                if (user != null) {
-                    UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(auth);
-                        
+                String email = tokenService.validateToken(token);
+                if (email != null && !email.isEmpty()) {
+                    UserDetails user = userRepository.findByEmail(email).orElse(null);
+                    if (user != null) {
+                        UsernamePasswordAuthenticationToken auth =
+                            new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                        SecurityContextHolder.getContext().setAuthentication(auth);
+                    }
+                } else {
+                    System.out.println("Token inválido");
                 }
             } catch (Exception e) {
-                
                 System.out.println("Token inválido ou erro no filtro: " + e.getMessage());
             }
         }
-        
+
         filterChain.doFilter(request, response);
+
     }
 
     private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
+        System.out.printf("Authorization Header: %s%n", authHeader);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) return null;
         return authHeader.replace("Bearer ", "");
     }

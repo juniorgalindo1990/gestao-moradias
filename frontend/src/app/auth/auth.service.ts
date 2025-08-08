@@ -6,6 +6,7 @@ import { User } from '../user';
   providedIn: 'root'
 })
 export class AuthService {
+  [x: string]: any;
   private apiUrl = 'http://localhost:8080/auth';
 
   async login(email: string, senha: string): Promise<boolean> {

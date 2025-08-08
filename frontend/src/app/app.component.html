@@ -8,7 +8,7 @@
     <button *ngIf="authService.isAuthenticated()" [routerLink]="['/housing']">
       Moradias
     </button>
-    <button *ngIf="authService.isAuthenticated()" [routerLink]="['/profile']">
+    <button *ngIf="authService.isAuthenticated()" (click)="meuPerfil()">
       Meu Perfil
     </button>
     <button *ngIf="authService.isAuthenticated()" (click)="logout()">

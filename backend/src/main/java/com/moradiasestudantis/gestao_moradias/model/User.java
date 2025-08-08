@@ -39,12 +39,14 @@ public class User implements UserDetails {
     public User() {}
 
     
-    @Override public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == RoleEnum.ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        } else {
-            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
+        if (!this.role.equals(RoleEnum.USER)) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         }
+        return authorities;
     }
 
     @Override public String getPassword() { return this.senha; }
