@@ -1,57 +1,46 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../user';
+
+interface TokenResponse {
+  token: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  [x: string]: any;
   private apiUrl = 'http://localhost:8080/auth';
+  private http = inject(HttpClient);
 
   async login(email: string, senha: string): Promise<boolean> {
     try {
-      const response = await fetch(`${this.apiUrl}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, senha }),
-      });
-
-      if (!response.ok) {
-        console.error('Login falhou:', response.statusText);
-        return false;
+      const response = await firstValueFrom(
+        this.http.post<TokenResponse>(`${this.apiUrl}/login`, { email, senha })
+      );
+      if (response && response.token) {
+        localStorage.setItem('token', response.token);
+        return true;
       }
-
-      const data = await response.json();
-      localStorage.setItem('token', data.token);
-      return true;
-
+      return false;
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
+      console.error('Login falhou:', error);
       return false;
     }
   }
 
   async register(newUser: Omit<User, 'id'>): Promise<User | null> {
-  try {
-    const response = await fetch(`${this.apiUrl}/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newUser),
-    });
-
-    if (!response.ok) {
-      console.error('Registro falhou');
-      return null;
+    try {
+      return await firstValueFrom(
+        this.http.post<User>(`${this.apiUrl}/register`, newUser)
+      );
+    } catch (error) {
+      console.error('Erro ao registrar usuário:', error);
+      throw error;
     }
-    const text = await response.text();
-    return text ? JSON.parse(text) : null;
-
-  } catch (error) {
-    console.error('Erro ao registrar usuário:', error);
-    return null;
   }
-}
 
   logout(): void {
     localStorage.removeItem('token');
