@@ -19,11 +19,27 @@
     </div>
 
     <div class="form-group">
-      <label for="idade">Idade</label>
-      <input id="idade" type="number" formControlName="idade" placeholder="Sua idade">
-      <div *ngIf="profileForm.get('idade')?.invalid && profileForm.get('idade')?.touched" class="error-message">
-        <span *ngIf="profileForm.get('idade')?.errors?.['required']">Idade é obrigatória.</span>
-        <span *ngIf="profileForm.get('idade')?.errors?.['min']">Você deve ter pelo menos 18 anos.</span>
+      <label for="dataNascimento">Data de Nascimento</label>
+      <input id="dataNascimento" type="date" formControlName="dataNascimento">
+      <div *ngIf="profileForm.get('dataNascimento')?.invalid && profileForm.get('dataNascimento')?.touched" class="error-message">
+        Data de nascimento é obrigatória.
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="telefone">Telefone</label>
+      <input id="telefone" type="text" formControlName="telefone" placeholder="Seu telefone (apenas números)">
+      <div *ngIf="profileForm.get('telefone')?.invalid && profileForm.get('telefone')?.touched" class="error-message">
+        <span *ngIf="profileForm.get('telefone')?.errors?.['required']">Telefone é obrigatório.</span>
+        <span *ngIf="profileForm.get('telefone')?.errors?.['pattern']">Telefone deve conter 10 ou 11 dígitos.</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="periodoAtual">Período Atual</label>
+      <input id="periodoAtual" type="text" formControlName="periodoAtual" placeholder="Ex: 5º período">
+      <div *ngIf="profileForm.get('periodoAtual')?.invalid && profileForm.get('periodoAtual')?.touched" class="error-message">
+        Período atual é obrigatório.
       </div>
     </div>
 
@@ -53,6 +69,25 @@
       <label for="fumante">É fumante?</label>
     </div>
 
+    <hr>
+    <p><strong>Preferências de Moradia:</strong></p>
+    <div class="form-group checkbox-group">
+      <input id="wifi" type="checkbox" formControlName="wifi">
+      <label for="wifi">Wi-Fi</label>
+    </div>
+    <div class="form-group checkbox-group">
+      <input id="garagem" type="checkbox" formControlName="garagem">
+      <label for="garagem">Garagem</label>
+    </div>
+    <div class="form-group checkbox-group">
+      <input id="mobiliado" type="checkbox" formControlName="mobiliado">
+      <label for="mobiliado">Mobiliado</label>
+    </div>
+    <div class="form-group checkbox-group">
+      <input id="banheiroPrivativo" type="checkbox" formControlName="banheiroPrivativo">
+      <label for="banheiroPrivativo">Banheiro Privativo</label>
+    </div>
+    <hr>
     <button type="submit" [disabled]="profileForm.invalid">Salvar Perfil</button>
   </form>
 </div>

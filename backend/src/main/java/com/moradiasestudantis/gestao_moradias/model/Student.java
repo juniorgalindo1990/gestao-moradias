@@ -19,7 +19,7 @@ public class Student {
 
     @NotBlank(message = "Nome completo é obrigatório")
     private String nomeCompleto;
-    
+
     @NotBlank(message = "CPF é obrigatório")
     @Size(min = 11, max = 11, message = "CPF deve ter 11 caracteres")
     @Pattern(regexp = "^[0-9]+$", message = "CPF deve conter apenas números")
@@ -38,18 +38,23 @@ public class Student {
 
     @NotBlank(message = "Curso é obrigatório")
     private String curso;
+
+    @NotBlank(message = "Universidade é obrigatória")
+    private String universidade;
+
     private boolean wifi;
     private boolean garagem;
     private boolean mobiliado;
     private boolean banheiroPrivativo;
+    private boolean aceitaAnimais;
+    private boolean fumante;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    
     public Student() {
-    }    
+    }
 
     public Long getId() {
         return id;
@@ -107,6 +112,14 @@ public class Student {
         this.curso = curso;
     }
 
+    public String getUniversidade() {
+        return universidade;
+    }
+
+    public void setUniversidade(String universidade) {
+        this.universidade = universidade;
+    }
+
     public boolean isWifi() {
         return wifi;
     }
@@ -137,6 +150,22 @@ public class Student {
 
     public void setBanheiroPrivativo(boolean banheiroPrivativo) {
         this.banheiroPrivativo = banheiroPrivativo;
+    }
+    
+    public boolean isAceitaAnimais() {
+        return aceitaAnimais;
+    }
+
+    public void setAceitaAnimais(boolean aceitaAnimais) {
+        this.aceitaAnimais = aceitaAnimais;
+    }
+
+    public boolean isFumante() {
+        return fumante;
+    }
+
+    public void setFumante(boolean fumante) {
+        this.fumante = fumante;
     }
 
     public User getUser() {

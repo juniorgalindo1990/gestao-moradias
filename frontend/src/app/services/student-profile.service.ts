@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { StudentProfile } from '../student-profile';
 import { AuthService } from '../auth/auth.service';
@@ -14,9 +14,9 @@ export class StudentProfileService {
 
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
-    const role = this.authService.hasRole('ESTUDANTE');
-    console.log('Token atual:', token);
-    console.log('Role atual:', role);
+    if (!token) {      
+      return new HttpHeaders();
+    }
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
@@ -24,35 +24,30 @@ export class StudentProfileService {
   }
 
   async getStudentProfile(): Promise<StudentProfile | null> {
+    const headers = this.getAuthHeaders();
+    if (!headers.has('Authorization')) {
+        return null;
+    }
     try {
-      const headers = this.getAuthHeaders();
-      const response = await firstValueFrom(this.http.get<StudentProfile>(this.apiUrl, { headers }));
-      return response;
+      return await firstValueFrom(this.http.get<StudentProfile>(this.apiUrl, { headers }));
     } catch (error) {
+      if (error instanceof HttpErrorResponse && error.status === 404) {
+        return null;
+      }
       console.error('Erro ao buscar perfil do estudante:', error);
       throw error;
     }
   }
 
   async createOrUpdateStudentProfile(profile: StudentProfile): Promise<StudentProfile> {
+    const headers = this.getAuthHeaders();
     try {
-      const headers = this.getAuthHeaders();
-      let existingProfile: StudentProfile | null = null;
-      try {
-        existingProfile = await firstValueFrom(this.http.get<StudentProfile>(this.apiUrl, { headers }));
-      } catch (error: any) {
-        if (error.status !== 404) {
-          console.error('Error checking for existing profile:', error);
-          throw error;
-        }
-      }
+      const existingProfile = await this.getStudentProfile();
       
-      if (existingProfile) {
-        const response = await firstValueFrom(this.http.put<StudentProfile>(this.apiUrl, profile, { headers }));
-        return response;
-      } else {
-        const response = await firstValueFrom(this.http.post<StudentProfile>(this.apiUrl, profile, { headers }));
-        return response;
+      if (existingProfile) {        
+        return await firstValueFrom(this.http.put<StudentProfile>(this.apiUrl, profile, { headers }));
+      } else {        
+        return await firstValueFrom(this.http.post<StudentProfile>(this.apiUrl, profile, { headers }));
       }
     } catch (error) {
       console.error('Erro ao criar ou atualizar perfil do estudante:', error);
