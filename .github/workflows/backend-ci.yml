@@ -1,4 +1,4 @@
-name: CI-CD Spring Boot
+name: CI/CD Spring Boot
 
 on:
   push:
@@ -36,4 +36,5 @@ jobs:
         run: echo "Usando API em $API_URL"
 
       - name: Compilar e rodar testes com perfil de testes
+        working-directory: backend
         run: mvn clean verify -Dspring.profiles.active=test
