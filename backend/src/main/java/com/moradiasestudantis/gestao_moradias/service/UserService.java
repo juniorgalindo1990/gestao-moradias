@@ -1,6 +1,7 @@
 package com.moradiasestudantis.gestao_moradias.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,9 +19,8 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository,
-                       BCryptPasswordEncoder passwordEncoder) {
+    @Autowired    
+    public UserService(UserRepository userRepository, @Lazy BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -33,16 +33,17 @@ public class UserService implements UserDetailsService {
     }
 
     
-    public void register(RegisterDto data) {
+    public User register(RegisterDto data) {
         if (userRepository.existsByEmail(data.getEmail())) {
             throw new EmailAlreadyExistsException("Este e-mail já está cadastrado.");
         }
 
         User newUser = new User();
+        newUser.setName(data.getName());
         newUser.setEmail(data.getEmail());
         newUser.setSenha(passwordEncoder.encode(data.getSenha()));
         newUser.setRole(data.getRole());
 
-        userRepository.save(newUser);
+        return userRepository.save(newUser);
     }
 }

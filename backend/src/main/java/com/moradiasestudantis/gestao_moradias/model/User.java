@@ -1,16 +1,15 @@
 package com.moradiasestudantis.gestao_moradias.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.moradiasestudantis.gestao_moradias.num.RoleEnum;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.moradiasestudantis.gestao_moradias.num.RoleEnum;
-
-import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -34,6 +33,7 @@ public class User implements UserDetails {
     private RoleEnum role;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Residence> residences = new ArrayList<>();
 
     public User() {}
@@ -41,12 +41,7 @@ public class User implements UserDetails {
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
-        if (!this.role.equals(RoleEnum.USER)) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        }
-        return authorities;
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
     }
 
     @Override public String getPassword() { return this.senha; }
