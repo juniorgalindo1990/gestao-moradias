@@ -43,10 +43,13 @@ public class StudentService {
         student.setTelefone(studentDetails.getTelefone());
         student.setCurso(studentDetails.getCurso());
         student.setPeriodoAtual(studentDetails.getPeriodoAtual());
+        student.setUniversidade(studentDetails.getUniversidade());
         student.setWifi(studentDetails.isWifi());
         student.setGaragem(studentDetails.isGaragem());
         student.setMobiliado(studentDetails.isMobiliado());
         student.setBanheiroPrivativo(studentDetails.isBanheiroPrivativo());
+        student.setAceitaAnimais(studentDetails.isAceitaAnimais());
+        student.setFumante(studentDetails.isFumante());
 
         return studentRepository.save(student);
     }
