@@ -32,24 +32,16 @@ export class RegisterComponent {
 
     try {
       console.log('Dados que serão enviados para a API:', this.registerForm.value);
-
       
       const response = await this.authService.register(this.registerForm.value);
-
+      
       
       alert('Usuário registrado com sucesso!');
       this.router.navigate(['/auth/login']);
 
-    } catch (error) {
-      
-      if (error instanceof HttpErrorResponse && error.status === 409) {
-        
-        alert(error.error);
-      } else {
-        
-        console.error('Erro detalhado:', error);
-        alert('Ocorreu um erro inesperado no registro. Tente novamente.');
-      }
+    } catch (error: any) {      
+      console.error('Erro detalhado:', error);      
+      alert(error.message || 'Ocorreu um erro inesperado no registro. Tente novamente.');
     }
   }
 }

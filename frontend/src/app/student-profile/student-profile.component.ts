@@ -21,12 +21,18 @@ export class StudentProfileComponent implements OnInit {
   constructor() {
     this.profileForm = this.fb.group({
       nomeCompleto: ['', Validators.required],
-      cpf: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]], // CPF com 11 dígitos
-      idade: ['', [Validators.required, Validators.min(18)]], // Idade mínima de 18 anos
+      cpf: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]],
+      dataNascimento: ['', [Validators.required]],
+      telefone: ['', [Validators.required, Validators.pattern(/^\d{10,11}$/)]],
+      periodoAtual: ['', Validators.required],
       universidade: ['', Validators.required],
       curso: ['', Validators.required],
       aceitaAnimais: [false],
-      fumante: [false]
+      fumante: [false],
+      wifi: [false],
+      garagem: [false],
+      mobiliado: [false],
+      banheiroPrivativo: [false]
     });
   }
 
@@ -41,8 +47,7 @@ export class StudentProfileComponent implements OnInit {
         this.profileForm.patchValue(profile);
       }
     } catch (error) {
-      console.error('Erro ao carregar perfil:', error);
-      alert('Erro ao carregar perfil.');
+      console.error('Erro ao carregar perfil (pode ser normal se for um novo usuário):', error);
     }
   }
 
@@ -51,9 +56,10 @@ export class StudentProfileComponent implements OnInit {
       try {
         await this.studentProfileService.createOrUpdateStudentProfile(this.profileForm.value);
         alert('Perfil salvo com sucesso!');
-      } catch (error) {
+        this.router.navigate(['/home']);
+      } catch (error: any) {
         console.error('Erro ao salvar perfil:', error);
-        alert('Erro ao salvar perfil.');
+        alert(`Erro ao salvar perfil: ${error.message}`);
       }
     } else {
       alert('Por favor, preencha todos os campos obrigatórios e corrija os erros.');
