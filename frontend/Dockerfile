@@ -1,9 +1,9 @@
 # Estágio de build
 FROM node:20 AS build
 WORKDIR /app
-COPY package*.json ./
+COPY frontend/package*.json ./
 RUN npm ci
-COPY . .
+COPY frontend/ .
 
 # Argumento para receber a URL da API
 ARG NG_APP_API_URL
@@ -17,5 +17,5 @@ RUN npm run build -- --configuration production
 # Estágio de produção
 FROM nginx:alpine
 COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
