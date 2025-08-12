@@ -17,5 +17,6 @@ RUN npm run build -- --configuration production
 # Estágio de produção
 FROM nginx:alpine
 COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
+# Copia o nginx.conf de dentro da pasta do app que foi copiada
 COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
