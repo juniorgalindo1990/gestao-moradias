@@ -23,10 +23,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: gestao-moradias-frontend
-          property: url
+        value: "https://CHANGE-ME.onrender.com"
 
   - type: web
     name: gestao-moradias-frontend
@@ -37,7 +34,4 @@ services:
     rootDir: frontend
     envVars:
       - key: NG_APP_API_URL
-        fromService:
-          type: web
-          name: gestao-moradias-backend
-          property: url
+        value: "https://CHANGE-ME.onrender.com"
