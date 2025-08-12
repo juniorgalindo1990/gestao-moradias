@@ -1,0 +1,40 @@
+name: CI/CD Spring Boot
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env: 
+      NODE_ENV: production
+      API_URL: "https://meuapp.com/api"
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: maven
+
+      - name: Usar segredo 
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+        run: echo "Chave API carregada"
+
+      - name: Mostrar URL configurada
+        run: echo "Usando API em $API_URL"
+
+      - name: Compilar e rodar testes com perfil de testes
+        working-directory: backend
+        run: mvn clean verify -Dspring.profiles.active=test
