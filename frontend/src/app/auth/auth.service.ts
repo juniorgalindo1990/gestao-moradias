@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../user';
+import { environment } from '../../environments/environment';
 
 interface TokenResponse {
   token: string;
@@ -12,7 +13,7 @@ interface TokenResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
   private http = inject(HttpClient);
 
   async login(email: string, senha: string): Promise<boolean> {
