@@ -8,6 +8,7 @@ databases:
 services:
   - type: web
     name: gestao-moradias-backend
+    plan: free 
     runtime: docker
     repo: https://github.com/juniorgalindo1990/gestao-moradias
     autoDeploy: true
@@ -27,6 +28,7 @@ services:
 
   - type: web
     name: gestao-moradias-frontend
+    plan: free 
     runtime: docker
     repo: https://github.com/juniorgalindo1990/gestao-moradias
     autoDeploy: true
