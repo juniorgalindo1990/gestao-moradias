@@ -17,44 +17,53 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Nome completo é obrigatório")
+    @NotBlank
     private String nomeCompleto;
 
-    @NotBlank(message = "CPF é obrigatório")
-    @Size(min = 11, max = 11, message = "CPF deve ter 11 caracteres")
-    @Pattern(regexp = "^[0-9]+$", message = "CPF deve conter apenas números")
+    @NotBlank
+    @Size(min = 11, max = 11)
+    @Pattern(regexp = "^[0-9]+$")
     private String cpf;
 
-    @NotNull(message = "Data de nascimento é obrigatória")
-    @Past(message = "Data de nascimento deve ser no passado")
+    @NotNull
+    @Past
     private LocalDate dataNascimento;
 
-    @NotBlank(message = "Telefone é obrigatório")
-    @Pattern(regexp = "^[0-9]{10,11}$", message = "Telefone deve ter 10 ou 11 dígitos")
+    @NotBlank
+    @Pattern(regexp = "^[0-9]{10,11}$")
     private String telefone;
 
-    @NotBlank(message = "Período atual é obrigatório")
+    @NotBlank
     private String periodoAtual;
 
-    @NotBlank(message = "Curso é obrigatório")
+    @NotBlank
     private String curso;
-
-    @NotBlank(message = "Universidade é obrigatória")
+    
+    @NotBlank
     private String universidade;
 
+    @NotNull
     private boolean wifi;
+
+    @NotNull
     private boolean garagem;
+
+    @NotNull
     private boolean mobiliado;
+
+    @NotNull
     private boolean banheiroPrivativo;
+
+    @NotNull
     private boolean aceitaAnimais;
+
+    @NotNull
     private boolean fumante;
+
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
-
-    public Student() {
-    }
 
     public Long getId() {
         return id;
@@ -151,7 +160,7 @@ public class Student {
     public void setBanheiroPrivativo(boolean banheiroPrivativo) {
         this.banheiroPrivativo = banheiroPrivativo;
     }
-    
+
     public boolean isAceitaAnimais() {
         return aceitaAnimais;
     }
