@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { firstValueFrom } from 'rxjs';
 import { StudentProfile } from '../student-profile';
 import { AuthService } from '../auth/auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentProfileService {
-  private apiUrl = 'http://localhost:8080/profile/student';
+  private apiUrl = `${environment.apiUrl}/profile/student`;
   private http = inject(HttpClient);
   private authService = inject(AuthService);
 
