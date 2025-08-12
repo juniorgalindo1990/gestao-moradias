@@ -8,12 +8,11 @@ databases:
 services:
   - type: web
     name: gestao-moradias-backend
-    plan: free 
+    plan: free
     runtime: docker
     repo: https://github.com/juniorgalindo1990/gestao-moradias
     autoDeploy: true
     dockerfilePath: ./backend/Dockerfile
-    rootDir: backend
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -28,12 +27,11 @@ services:
 
   - type: web
     name: gestao-moradias-frontend
-    plan: free 
+    plan: free
     runtime: docker
     repo: https://github.com/juniorgalindo1990/gestao-moradias
     autoDeploy: true
     dockerfilePath: ./frontend/Dockerfile
-    rootDir: frontend
     envVars:
       - key: NG_APP_API_URL
         value: "https://CHANGE-ME.onrender.com"
