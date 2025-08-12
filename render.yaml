@@ -1,0 +1,53 @@
+services:
+  - type: pserv
+    name: gestao-moradias-db
+    runtime: postgres
+    postgresMajorVersion: 14
+    ipAllowList: []
+
+  - type: web
+    name: gestao-moradias-backend
+    runtime: docker
+    repo: https://github.com/juniorgalindo1990/gestao-moradias
+    autoDeploy: true
+    dockerfilePath: ./backend/Dockerfile
+    rootDir: backend
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DB_URL
+        fromService:
+          type: pserv
+          name: gestao-moradias-db
+          property: connectionString
+      - key: DB_USER
+        fromService:
+          type: pserv
+          name: gestao-moradias-db
+          property: user
+      - key: DB_PASS
+        fromService:
+          type: pserv
+          name: gestao-moradias-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: gestao-moradias-frontend
+          property: url
+
+  - type: web
+    name: gestao-moradias-frontend
+    runtime: docker
+    repo: https://github.com/juniorgalindo1990/gestao-moradias
+    autoDeploy: true
+    dockerfilePath: ./frontend/Dockerfile
+    rootDir: frontend
+    envVars:
+      - key: NG_APP_API_URL
+        fromService:
+          type: web
+          name: gestao-moradias-backend
+          property: url
