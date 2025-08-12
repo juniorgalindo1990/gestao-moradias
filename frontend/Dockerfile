@@ -4,8 +4,14 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+
+# Argumento para receber a URL da API
 ARG NG_APP_API_URL
-ENV NG_APP_API_URL=$NG_APP_API_URL
+
+# Substitui o placeholder no arquivo de ambiente pelo valor real da URL
+RUN sed -i "s|__NG_APP_API_URL__|${NG_APP_API_URL}|g" src/environments/environment.prod.ts
+
+# Constrói a aplicação
 RUN npm run build -- --configuration production
 
 # Estágio de produção
