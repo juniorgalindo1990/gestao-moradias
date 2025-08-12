@@ -3,7 +3,6 @@ databases:
     databaseName: gestao_moradias_db
     user: gestao_moradias_user
     plan: free
-    postgresMajorVersion: 14
 
 services:
   - type: web
@@ -16,14 +15,23 @@ services:
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      - key: DB_URL
+      - key: DB_URL # Constrói a URL JDBC manualmente
+        value: "jdbc:postgresql://${gestao-moradias-db.host}:${gestao-moradias-db.port}/${gestao-moradias-db.databaseName}"
+      - key: DB_USER
         fromDatabase:
           name: gestao-moradias-db
-          property: connectionString
+          property: user
+      - key: DB_PASS
+        fromDatabase:
+          name: gestao-moradias-db
+          property: password
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
-        value: "https://CHANGE-ME.onrender.com"
+        fromService:
+          type: web
+          name: gestao-moradias-frontend
+          property: url
 
   - type: web
     name: gestao-moradias-frontend
@@ -34,4 +42,7 @@ services:
     dockerfilePath: ./frontend/Dockerfile
     envVars:
       - key: NG_APP_API_URL
-        value: "https://CHANGE-ME.onrender.com"
+        fromService:
+          type: web
+          name: gestao-moradias-backend
+          property: url
