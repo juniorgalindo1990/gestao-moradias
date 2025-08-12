@@ -11,6 +11,7 @@ import { ResidenceDetailsComponent } from './pages/residences/residence-details/
 import { StudentListComponent } from './pages/students/student-list/student-list.component';
 import { StudentFormComponent } from './pages/students/student-form/student-form.component';
 import { StudentDetailsComponent } from './pages/students/student-details/student-details.component';
+import { ProprietarioProfileComponent } from './proprietario-profile.component';
 
 export const routes: Routes = [
   {
@@ -36,18 +37,28 @@ export const routes: Routes = [
     data: { role: 'ESTUDANTE' }
   },
   {
+    path: 'profile/proprietario',
+    component: ProprietarioProfileComponent,
+    canActivate: [authGuard],
+    data: { role: 'PROPRIETARIO' },
+    title: 'Perfil do Proprietário'
+  },
+  {
     path: 'auth/register',
     component: RegisterComponent
   },
   {
     path: 'search-students',
-    component: SearchStudentsComponent
+    component: SearchStudentsComponent,
+    canActivate: [authGuard],
+    data: { role: 'PROPRIETARIO' }
   },
   {
     path: 'residences',
     component: ResidenceListComponent,
     canActivate: [authGuard],
-    title: 'Residências'
+    data: { role: 'PROPRIETARIO' },
+    title: 'Minhas Residências'
   },
   {
     path: 'residences/new',
@@ -73,6 +84,7 @@ export const routes: Routes = [
     path: 'students',
     component: StudentListComponent,
     canActivate: [authGuard],
+    data: { role: 'PROPRIETARIO' },
     title: 'Estudantes'
   },
   {

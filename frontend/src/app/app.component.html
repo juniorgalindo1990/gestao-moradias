@@ -1,16 +1,18 @@
 <header class="main-header">
   <h1>Plataforma de Gestão de Moradias</h1>
   <nav>
-    <!-- Botão Início adicionado -->
     <button *ngIf="authService.isAuthenticated()" [routerLink]="['/home']">
       Início
     </button>
-    <button *ngIf="authService.isAuthenticated()" [routerLink]="['/housing']">
-      Moradias
+    
+    <button *ngIf="authService.hasRole('PROPRIETARIO')" [routerLink]="['/residences']">
+      Minhas Moradias
     </button>
-    <button *ngIf="authService.isAuthenticated()" (click)="meuPerfil()">
+
+    <button *ngIf="authService.hasRole('ESTUDANTE') || authService.hasRole('PROPRIETARIO')" (click)="meuPerfil()">
       Meu Perfil
     </button>
+    
     <button *ngIf="authService.isAuthenticated()" (click)="logout()">
       Logout
     </button>
