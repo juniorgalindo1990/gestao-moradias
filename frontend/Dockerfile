@@ -1,21 +1,16 @@
 # Estágio de build
-FROM node:20 AS build
+FROM ubuntu:latest AS build
+RUN apt-get update && apt-get install -y openjdk-21-jdk maven
 WORKDIR /app
-COPY frontend/package*.json ./
-RUN npm ci
-COPY frontend/ .
-
-# Argumento para receber a URL da API
-ARG NG_APP_API_URL
-
-# Substitui o placeholder no arquivo de ambiente pelo valor real da URL
-RUN sed -i "s|__NG_APP_API_URL__|${NG_APP_API_URL}|g" src/environments/environment.prod.ts
-
-# Constrói a aplicação
-RUN npm run build -- --configuration production
+COPY . .
+# Entra na pasta do backend antes de construir
+WORKDIR /app/backend
+RUN mvn clean install -DskipTests
 
 # Estágio de produção
-FROM nginx:alpine
-COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
-COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
+FROM openjdk:21-jdk
+WORKDIR /app
+EXPOSE 8080
+# Copia o JAR do local correto
+COPY --from=build /app/backend/target/gestao-moradias-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
