@@ -13,18 +13,6 @@ services:
     autoDeploy: true
     dockerfilePath: ./backend/Dockerfile
     envVars:
-      - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: gestao-moradias-db
-          property: connectionString
-      - key: DB_USER
-        fromDatabase:
-          name: gestao-moradias-db
-          property: user
-      - key: DB_PASS
-        fromDatabase:
-          name: gestao-moradias-db
-          property: password
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
