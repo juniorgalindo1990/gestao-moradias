@@ -19,8 +19,8 @@ services:
           property: connectionString
       - key: JWT_SECRET
         generateValue: true
-      - key: FRONTEND_URL        
-        value: "https://gestao-moradias-frontend.onrender.com"
+      - key: FRONTEND_URL
+        value: "https://placeholder.com"
 
   - type: web
     name: gestao-moradias-frontend
@@ -30,5 +30,5 @@ services:
     autoDeploy: true
     dockerfilePath: ./frontend/Dockerfile
     envVars:
-      - key: NG_APP_API_URL        
-        value: "https://gestao-moradias-backend.onrender.com"
+      - key: NG_APP_API_URL
+        value: "https://placeholder.com"
