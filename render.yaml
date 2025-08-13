@@ -4,7 +4,7 @@ databases:
     databaseName: gestao_moradias
     user: gm_user
 
-services:
+services:  
   - type: web
     name: gestao-moradias-backend
     plan: free
@@ -14,33 +14,31 @@ services:
     autoDeploy: true
     dockerfilePath: ./backend/Dockerfile
     healthCheckPath: /actuator/health
-    envVars:
-      - key: DB_HOST
+    envVars:      
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      
+      - key: SPRING_DATASOURCE_URL
         fromDatabase:
           name: gestao-moradias-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: gestao-moradias-db
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: gestao-moradias-db
-          property: database
-      - key: DB_USER
+          property: jdbcConnectionString
+
+      - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: gestao-moradias-db
           property: user
-      - key: DB_PASSWORD
+
+      - key: SPRING_DATASOURCE_PASSWORD
         fromDatabase:
           name: gestao-moradias-db
           property: password
- 
+      
       - key: JWT_SECRET
         generateValue: true
+      
       - key: FRONTEND_URL
         value: "https://gestao-moradias-frontend.onrender.com"
-
+  
   - type: web
     name: gestao-moradias-frontend
     plan: free
