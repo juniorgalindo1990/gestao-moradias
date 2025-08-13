@@ -15,8 +15,18 @@ services:
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      - key: DB_URL
-        value: "jdbc:postgresql://${gestao-moradias-db.host}:${gestao-moradias-db.port}/${gestao-moradias-db.databaseName}"
+      - key: DB_HOST
+        fromDatabase:
+          name: gestao-moradias-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: gestao-moradias-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: gestao-moradias-db
+          property: database
       - key: DB_USER
         fromDatabase:
           name: gestao-moradias-db
@@ -28,7 +38,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
-        value: "https://CHANGE-ME.onrender.com"
+        value: "https://gestao-moradias-frontend.onrender.com"
 
   - type: web
     name: gestao-moradias-frontend
@@ -39,4 +49,7 @@ services:
     dockerfilePath: ./frontend/Dockerfile
     envVars:
       - key: NG_APP_API_URL
-        value: "https://CHANGE-ME.onrender.com"
+        fromService:
+          type: web
+          name: gestao-moradias-backend
+          property: url
