@@ -20,7 +20,10 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
-        value: "https://placeholder.com"
+        fromService:
+          type: web
+          name: gestao-moradias-frontend
+          property: url
 
   - type: web
     name: gestao-moradias-frontend
@@ -31,4 +34,7 @@ services:
     dockerfilePath: ./frontend/Dockerfile
     envVars:
       - key: NG_APP_API_URL
-        value: "https://placeholder.com"
+        fromService:
+          type: web
+          name: gestao-moradias-backend
+          property: url
