@@ -13,9 +13,7 @@ services:
     autoDeploy: true
     dockerfilePath: ./backend/Dockerfile
     envVars:
-      - key: SPRING_PROFILES_ACTIVE
-        value: prod
-      - key: DB_URL
+      - key: SPRING_DATASOURCE_URL
         fromDatabase:
           name: gestao-moradias-db
           property: connectionString
