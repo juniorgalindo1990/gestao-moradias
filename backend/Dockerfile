@@ -1,12 +1,17 @@
-FROM ubuntu:latest AS build
-RUN apt-get update
-RUN apt-get install -y openjdk-21-jdk maven
+FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
-COPY . .
-RUN mvn clean install -DskipTests
 
-FROM openjdk:21-jdk
+COPY backend/pom.xml backend/pom.xml
+RUN mvn -f backend/pom.xml -q -DskipTests verify || true
+
+COPY backend/ backend/
+RUN mvn -f backend/pom.xml -q -DskipTests package
+
+FROM eclipse-temurin:21-jre
 WORKDIR /app
+
+COPY --from=build /app/backend/target/*SNAPSHOT.jar /app/app.jar
+
 EXPOSE 8080
-COPY --from=build /app/target/gestao-moradias-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
+
+ENTRYPOINT ["java","-Dspring.profiles.active=prod","-jar","/app/app.jar"]

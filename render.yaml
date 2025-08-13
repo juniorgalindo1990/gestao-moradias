@@ -1,43 +1,53 @@
 databases:
   - name: gestao-moradias-db
-    databaseName: gestao_moradias_db
-    user: gestao_moradias_user
     plan: free
-    postgresMajorVersion: 14
+    databaseName: gestao_moradias
+    user: gm_user
 
 services:
+  
   - type: web
     name: gestao-moradias-backend
+    plan: free
     runtime: docker
     repo: https://github.com/juniorgalindo1990/gestao-moradias
+    branch: main
     autoDeploy: true
+    healthCheckPath: /actuator/health
     dockerfilePath: ./backend/Dockerfile
-    rootDir: backend
     envVars:
-      - key: SPRING_PROFILES_ACTIVE
-        value: prod
-      - key: DB_URL
+      
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://${gestao-moradias-db.host}:${gestao-moradias-db.port}/${gestao-moradias-db.database}?sslmode=require
+
+      
+      - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: gestao-moradias-db
-          property: connectionString
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: gestao-moradias-db
+          property: password
+
+      
       - key: JWT_SECRET
         generateValue: true
-      - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: gestao-moradias-frontend
-          property: url
 
+      
+      - key: FRONTEND_URL
+        value: "https://gestao-moradias-frontend.onrender.com"
+
+ 
   - type: web
     name: gestao-moradias-frontend
+    plan: free
     runtime: docker
     repo: https://github.com/juniorgalindo1990/gestao-moradias
+    branch: main
     autoDeploy: true
     dockerfilePath: ./frontend/Dockerfile
-    rootDir: frontend
     envVars:
+      
       - key: NG_APP_API_URL
-        fromService:
-          type: web
-          name: gestao-moradias-backend
-          property: url
+        value: "https://gestao-moradias-backend.onrender.com"
