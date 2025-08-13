@@ -1,16 +1,17 @@
-# Estágio de build
-FROM ubuntu:latest AS build
-RUN apt-get update && apt-get install -y openjdk-21-jdk maven
+FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
-COPY . .
-# Entra na pasta do backend antes de construir
-WORKDIR /app/backend
-RUN mvn clean install -DskipTests
 
-# Estágio de produção
-FROM openjdk:21-jdk
+COPY backend/pom.xml backend/pom.xml
+RUN mvn -f backend/pom.xml -q -DskipTests verify || true
+
+COPY backend/ backend/
+RUN mvn -f backend/pom.xml -q -DskipTests package
+
+FROM eclipse-temurin:21-jre
 WORKDIR /app
+
+COPY --from=build /app/backend/target/*SNAPSHOT.jar /app/app.jar
+
 EXPOSE 8080
-# Copia o JAR do local correto
-COPY --from=build /app/backend/target/gestao-moradias-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
+
+ENTRYPOINT ["java","-Dspring.profiles.active=prod","-jar","/app/app.jar"]
