@@ -5,7 +5,6 @@ databases:
     user: gm_user
 
 services:
-  
   - type: web
     name: gestao-moradias-backend
     plan: free
@@ -13,32 +12,35 @@ services:
     repo: https://github.com/juniorgalindo1990/gestao-moradias
     branch: main
     autoDeploy: true
-    healthCheckPath: /actuator/health
     dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /actuator/health
     envVars:
-      
-      - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://${gestao-moradias-db.host}:${gestao-moradias-db.port}/${gestao-moradias-db.database}?sslmode=require
-
-      
-      - key: SPRING_DATASOURCE_USERNAME
+      - key: DB_HOST
+        fromDatabase:
+          name: gestao-moradias-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: gestao-moradias-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: gestao-moradias-db
+          property: database
+      - key: DB_USER
         fromDatabase:
           name: gestao-moradias-db
           property: user
-      - key: SPRING_DATASOURCE_PASSWORD
+      - key: DB_PASSWORD
         fromDatabase:
           name: gestao-moradias-db
           property: password
-
-      
+ 
       - key: JWT_SECRET
         generateValue: true
-
-      
       - key: FRONTEND_URL
         value: "https://gestao-moradias-frontend.onrender.com"
 
- 
   - type: web
     name: gestao-moradias-frontend
     plan: free
@@ -48,6 +50,5 @@ services:
     autoDeploy: true
     dockerfilePath: ./frontend/Dockerfile
     envVars:
-      
       - key: NG_APP_API_URL
         value: "https://gestao-moradias-backend.onrender.com"
