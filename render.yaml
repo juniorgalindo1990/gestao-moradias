@@ -41,4 +41,4 @@ services:
     dockerfilePath: ./frontend/Dockerfile
     envVars:
       - key: NG_APP_API_URL
-        value: "https://placeholder.com" 
+        value: "https://placeholder.com"
