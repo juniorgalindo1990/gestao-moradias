@@ -1,33 +1,34 @@
-name: CI - Backend
+name: CI - Backend / build-test
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["**"]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
   pull_request:
-    branches: [ "main" ]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
 
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Temurin JDK 21
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '21'
+          distribution: temurin
+          java-version: "21"
+          cache: maven
 
-      - name: Cache Maven
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/backend/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Build & Test (profile test / H2)
-        working-directory: backend
-        run: mvn -Dspring.profiles.active=test -B clean verify
+      - name: Build & test (profile test / H2)
+        run: mvn -B -f backend/pom.xml -Ptest clean verify
+        env:
+          SPRING_PROFILES_ACTIVE: test
+          MAVEN_OPTS: -Xmx1g
