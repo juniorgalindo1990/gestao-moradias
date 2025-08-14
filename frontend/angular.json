@@ -35,16 +35,8 @@
           "configurations": {
             "production": {
               "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
+                { "type": "initial", "maximumWarning": "500kb", "maximumError": "1mb" },
+                { "type": "anyComponentStyle", "maximumWarning": "2kb", "maximumError": "4kb" }
               ],
               "outputHashing": "all",
               "fileReplacements": [
@@ -65,43 +57,27 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
-            "production": {
-              "buildTarget": "frontend:build:production"
-            },
-            "development": {
-              "buildTarget": "frontend:build:development"
-            }
+            "production": { "buildTarget": "frontend:build:production" },
+            "development": { "buildTarget": "frontend:build:development" }
           },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "frontend:build"
-          }
+          "options": { "buildTarget": "frontend:build" }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": [ "zone.js", "zone.js/testing" ],
             "tsConfig": "tsconfig.spec.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "assets": [ "src/favicon.ico", "src/assets" ],
+            "styles": [ "src/styles.css" ],
             "scripts": []
           }
         }
       }
     }
   },
-  "cli": {
-    "analytics": false
-  }
+  "cli": { "analytics": false }
 }
