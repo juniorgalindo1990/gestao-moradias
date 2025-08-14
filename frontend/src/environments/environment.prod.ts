@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: '__NG_APP_API_URL__'
+  apiUrl: 'https://gestao-moradias-rp-ajg2.onrender.com'
 };
