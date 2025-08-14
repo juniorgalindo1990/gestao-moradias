@@ -1,8 +1,11 @@
 FROM node:20-alpine AS build
-WORKDIR /app
 
-COPY package*.json ./
+WORKDIR /app
+COPY frontend/package*.json ./
+COPY frontend/package-lock.json ./
 RUN npm ci
+COPY frontend/ ./
+
 
 COPY . .
 
