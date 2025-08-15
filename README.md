@@ -14,6 +14,14 @@ O sistema permitirá que os usuários:
 * Utilizem uma correspondência inteligente para encontrar colegas de apartamento.
 * Possuam um módulo opcional para gerenciamento de contratos de aluguel e despesas.
 
+* 🌐 Deploy
+*   
+  Backend
+  https://gestao-moradias-rp-ajg2.onrender.com 
+
+  Frontend
+  https://gestao-moradias-frontend-2d07.onrender.com 
+
 ## :hammer_and_wrench: Tecnologias Usadas
 ### [Angular](https://angular.io/)
 * Versão: 17.3.12
